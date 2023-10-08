@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "@types/luxon": "^3.3.2",
+    "@types/strip-color": "^0.1.0",
+    "@types/yaml": "^1.9.7",
+    "color": "^4.2.3",
+    "colors": "^1.4.0",
+    "dotenv": "^16.3.1",
+    "luxon": "^3.4.3",
+    "strip-color": "^0.1.0",
+    "yaml": "^2.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.3"
+  }
+}

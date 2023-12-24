@@ -2,3 +2,5 @@ server/
 bin/
 node_modules/
 dist/
+*.exe
+paper-smp-linux

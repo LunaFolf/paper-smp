@@ -1,0 +1,9 @@
+{
+  "targets": [
+    "node18-win",
+    "node18-linux"
+  ],
+  "assets": [
+    "node_modules/figlet/**/*.flf"
+  ]
+}

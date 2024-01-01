@@ -1,12 +1,11 @@
 require('dotenv').config()
 require('colors')
 
-import type from 'colors'
+// import type from 'colors'
 
 import yaml from 'yaml'
 import crypto from 'crypto'
 import fs from 'fs'
-import os from 'os'
 import { downloadBuildJar, getBuilds } from "./api/papermc"
 import { spawn } from 'child_process'
 import {downloadAssetJar, getReleases} from "./api/essentialsx";
@@ -32,6 +31,8 @@ type serverConfig = {
     }
   }
 }
+
+console.log(process.env)
 
 if (!fs.existsSync('./server-config.yml')) {
   // Create a default server config file

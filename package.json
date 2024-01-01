@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "prebuild": "rm -rf dist && tsc",
+    "prebuild": "rm -rf dist && CODEBUILT=true tsc",
     "build": "pkg --compress GZip dist/index.js -o 'paper-smp' -c 'pkg-config.json'"
   },
   "dependencies": {

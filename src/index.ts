@@ -1,7 +1,7 @@
 require('dotenv').config()
 require('colors')
 
-// import type from 'colors'
+import type from 'colors'
 
 import yaml from 'yaml'
 import crypto from 'crypto'

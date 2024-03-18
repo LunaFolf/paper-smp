@@ -25,12 +25,14 @@ type adoptBinaryAssetView = {
 }
 
 export async function getAssets (arch: adoptArch, os: adoptOS, image: adoptImage = 'jre'): Promise<adoptBinaryAssetView | null> {
-  const url = `https://api.adoptium.net/v3/assets/latest/17/hotspot?architecture=${arch}&os=${os}&image_type=${image}`
+  const url = `https://api.adoptium.net/v3/assets/latest/21/hotspot?architecture=${arch}&os=${os}&image_type=${image}`
 
   const response = await get(url)
   if (!response) return null
 
-  return (await response.json())[0] as adoptBinaryAssetView
+  const jsonResponse = await response.json()
+
+  return jsonResponse[0] as adoptBinaryAssetView
 }
 
 export async function downloadJRE (downloadURL: string, packageName: string) {

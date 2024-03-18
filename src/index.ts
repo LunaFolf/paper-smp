@@ -32,8 +32,6 @@ type serverConfig = {
   }
 }
 
-console.log(process.env)
-
 if (!fs.existsSync('./server-config.yml')) {
   // Create a default server config file
   fs.writeFileSync('./server-config.yml', yaml.stringify({
@@ -174,7 +172,6 @@ async function setupActiveJar (minecraftVersion: string): Promise<void> {
   console.log('Copying', latestBuild.downloads.application.name, 'to ./server/paper.jar')
   return new Promise((resolve, reject) => {
     fs.copyFile(`./bin/papermc/${latestBuild.downloads.application.name}`, './server/paper.jar', (error) => {
-      console.debug('copy errors:', {error})
       if (error) reject(error)
       resolve()
     })

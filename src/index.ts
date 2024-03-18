@@ -276,17 +276,17 @@ setupActiveJar(config.minecraft_version).then(async () => {
   const waitBeforeStart = await checkForOtherPlugins()
   if (!fs.existsSync('./server/plugins')) fs.mkdirSync('./server/plugins')
 
-  fs.readdir('./server/plugins/', (err, files) => {
-    for (const file of files) {
-      if (file.endsWith('.jar')) fs.rmSync('./server/plugins/' + file)
-    }
-  })
+  const existingPluginFiles = fs.readdirSync('./server/plugins').filter(file => file.endsWith('.jar'))
+  for (const file of existingPluginFiles) {
+    console.log('Removing Plugin Jar', file)
+    fs.rmSync('./server/plugins/' + file)
+  }
 
-  fs.readdir('./bin/plugins', (err, files) => {
-    for (const file of files) {
-      fs.copyFileSync('./bin/plugins/' + file, './server/plugins/' + file, fs.constants.COPYFILE_FICLONE)
-    }
-  })
+  const newPluginFiles = fs.readdirSync('./bin/plugins')
+  for (const file of newPluginFiles) {
+    console.log('Copying to server plugins', file)
+    fs.copyFileSync('./bin/plugins/' + file, './server/plugins/' + file, fs.constants.COPYFILE_FICLONE)
+  }
 
   fs.writeFileSync('./server/eula.txt','#suck it\n#microsoft\neula=true') // Is this legal??
 

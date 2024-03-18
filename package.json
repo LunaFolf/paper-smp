@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "serve": "NOD_ENV=development ts-node src/index.ts",
+    "serve": "NODE_ENV=development ts-node src/index.ts",
     "prebuild": "rm -rf dist && NODE_ENV=production tsc",
     "build": "pkg --compress GZip dist/index.js -o 'builds/paper-smp' -c 'pkg-config.json'"
   },

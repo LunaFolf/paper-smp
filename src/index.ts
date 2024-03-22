@@ -1,7 +1,9 @@
+// import {addToHistory, addWSSEventListener} from "./web_render";
+
 require('dotenv').config()
 require('colors')
 
-import type from 'colors'
+import * as colours from 'colors'
 
 import yaml from 'yaml'
 import crypto from 'crypto'
@@ -253,14 +255,14 @@ setupActiveJar(config.minecraft_version).then(async () => {
   })
 
   const essentialsBuild = await checkForLatestEssentialPlugins()
+  for (const essentialsAsset of essentialsBuild.assets) {
+    const isEssentialsAssetEnabled = config.plugins.essentials_x.some(enabledAsset => essentialsAsset.name.startsWith(enabledAsset + '-'))
 
-  essentialsBuild.assets.forEach(asset => {
-    const isEssentialsAssetEnabled = config.plugins.essentials_x.some(enabledAsset => asset.name.startsWith(enabledAsset + '-'))
     if (isEssentialsAssetEnabled) {
-      console.log('Downloading', asset.name)
-      downloadAssetJar(essentialsBuild.tag_name, asset.name)
+      console.log('Downloading essentials asset: ', essentialsAsset.name)
+      await downloadAssetJar(essentialsBuild.tag_name, essentialsAsset.name)
     }
-  })
+  }
 
   const { latestGeyser, latestFloodgate } = await checkForLatestGeyser()
 
@@ -348,6 +350,12 @@ setupActiveJar(config.minecraft_version).then(async () => {
       }
 
       console.log(msgObj.message)
+
+      // addToHistory({
+      //   timestamp: new Date().getTime(),
+      //   content: colours.strip(msgObj.raw),
+      //   type: msgObj.type
+      // })
     })
   })
 
@@ -358,5 +366,21 @@ setupActiveJar(config.minecraft_version).then(async () => {
   child.on('error', (err) => {
     console.error('Failed to start server')
     console.error(err)
+  })
+
+  child.once('spawn', () => {
+    if (child.stdin) {
+      // @ts-ignore
+      child.stdin.setEncoding('utf-8')
+
+      // @ts-ignore
+      // addWSSEventListener('onMessage', ({ data }) => {
+      //   const { type, content } = data
+      //
+      //   if (type === 'command') {
+      //     child.stdin.write(content + '\n')
+      //   }
+      // })
+    }
   })
 })

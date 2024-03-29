@@ -24,6 +24,8 @@
     "yaml": "^2.3.2"
   },
   "devDependencies": {
+    "@types/decompress": "^4.2.7",
+    "@types/figlet": "^1.5.8",
     "@types/node": "^20.11.29"
   }
 }

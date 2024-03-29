@@ -1,5 +1,7 @@
 // import {addToHistory, addWSSEventListener} from "./web_render";
 
+import {getModrinthProjectCompatibleVersion} from "./api/modrinth";
+
 require('dotenv').config()
 require('colors')
 
@@ -11,14 +13,14 @@ import fs from 'fs'
 import { downloadBuildJar, getBuilds } from "./api/papermc"
 import { spawn } from 'child_process'
 import {downloadAssetJar, getReleases} from "./api/essentialsx";
-import {adoptArch, adoptOS, downloadJRE, getAssets} from "./api/adoptium";
+import {downloadJRE, getAssets} from "./api/adoptium";
 import {downloadFloodgate, downloadGeyser, getLatestFloodgate, getLatestGeyser} from "./api/geyser";
-import {downloadResource, getResource} from "./api/spigot";
+import {getSpigotResource} from "./api/spigot";
 import {waitForKey} from "./utils/input"
 
-// TODO: get this into an import, without the IDE giving a fucking error
-const decompress = require('decompress')
-const { textSync } = require('figlet')
+import decompress from 'decompress'
+import {textSync} from 'figlet'
+import {handleModrinthPluginDownload, handleSpigotPluginDownload} from "./utils/plugins";
 
 type serverConfig = {
   minecraft_version: string,
@@ -27,7 +29,7 @@ type serverConfig = {
     other: {
       [key: string]: {
         name: string,
-        source: 'spigot',
+        source: 'spigot' | 'modrinth',
         id: number | string
       }
     }
@@ -56,7 +58,19 @@ if (!fs.existsSync('./server-config.yml')) {
   }))
 }
 
+function getGameMainVersion() {
+  const gameVersionSplit = config.minecraft_version.split('.')
+
+  if (gameVersionSplit && gameVersionSplit.length > 2) {
+    gameVersionSplit.pop()
+    return gameVersionSplit.join('.')
+  }
+
+  return config.minecraft_version
+}
+
 const config: serverConfig = yaml.parse(fs.readFileSync('./server-config.yml').toString())
+const mainGameVersion = getGameMainVersion()
 const serverFilesPath: string = './server'
 
 if (!fs.existsSync(serverFilesPath)) fs.mkdirSync(serverFilesPath)
@@ -103,7 +117,7 @@ async function checkForLatestGeyser () {
 async function checkForOtherPlugins (): Promise<boolean> {
   const otherPlugins = config.plugins.other
 
-  let manualDownloadRequired = false
+  let manualDownloadRequired = true
 
   for (const pluginKey of Object.keys(otherPlugins)) {
     const plugin = otherPlugins[pluginKey]
@@ -113,37 +127,36 @@ async function checkForOtherPlugins (): Promise<boolean> {
 
     switch (plugin.source) {
       case "spigot":
-        resource = await getResource(Number(plugin.id))
+        resource = await getSpigotResource(Number(plugin.id))
+        if (!resource) {
+          console.error('Unable to find resource for', plugin.name)
+          manualDownloadRequired = true
+          break
+        }
+        await handleSpigotPluginDownload(resource).then(outcome => {
+          if (!outcome.success || outcome.manualDownloadRequired) manualDownloadRequired = true
+        })
+        break
+      case "modrinth":
+        resource = await getModrinthProjectCompatibleVersion(String(plugin.id), ['bukkit'], [
+          config.minecraft_version,
+          mainGameVersion
+        ])
+
+        if (!resource) {
+          console.error('Unable to find resource for', plugin.name)
+          manualDownloadRequired = true
+          break
+        }
+        await handleModrinthPluginDownload(resource).then(outcome => {
+          if (!outcome.success || outcome.manualDownloadRequired) manualDownloadRequired = true
+        })
         break
       default:
         console.error('Unknown download source for', plugin.name, ':', plugin.source)
     }
 
-    if (resource) {
-      if (resource?.external) {
-        const url = new URL(resource.file.externalUrl)
-        const hostSplit = url.host.split('.')
-        const site = hostSplit[hostSplit.length - 2].toLowerCase()
 
-        switch (site) {
-          case "patreon":
-            console.error('Manual download required, you can download', plugin.name, 'from the URL here:', resource.file.externalUrl)
-            console.error('[We\'ll pause the server launch for you so you have time to download it, to opt out of this use --no-pause]')
-
-            manualDownloadRequired = true
-            break
-          default:
-            console.error('Unknown external source', site)
-        }
-      } else {
-        switch (plugin.source) {
-          case "spigot":
-            await downloadResource(resource.id, (pluginKey + '.jar'))
-        }
-      }
-    } else {
-      console.error('Could not find', plugin.name, 'via source', plugin.source)
-    }
   }
 
   return manualDownloadRequired
@@ -294,7 +307,7 @@ setupActiveJar(config.minecraft_version).then(async () => {
     await waitForKey()
   }
 
-  console.log(textSync('Starting Server', "Big Money-se").rainbow)
+  console.log(textSync('Starting Server', "Small Slant").rainbow)
 
   let javaExec = '../bin/openjre/' + javaPath + '/bin/java'
   switch (process.platform) {
@@ -340,7 +353,7 @@ setupActiveJar(config.minecraft_version).then(async () => {
 
       else if (msgObj.message.startsWith('Environment: ')) msgObj.message = msgObj.message.bgMagenta
       else if (msgObj.message.endsWith('For help, type "help"')) {
-        console.log(textSync('Server Started!', "Big Money-ne").yellow)
+        console.log(textSync('Server Started!', "Small Slant").yellow)
       }
 
       if (titleRegex.test(msgObj.message)) {

@@ -14,7 +14,7 @@ export async function downloadSpigotResource (resource: SpigotResource): Promise
     const fileName = resource.file.url.split('/')[1].split('.')[0] +'.jar'
     console.log('Downloading', resource.id, `(${fileName})`)
 
-    const response = await get('https://api.spiget.org/v2/' + resource.file.url);
+    const response = await get('https://api.spiget.org/v2/resources/' + resource.id + '/download');
     if (!response || !response.body) {
       console.error(response)
       throw new Error('Something aint right, chief')

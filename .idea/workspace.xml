@@ -4,20 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="45dc901f-6ded-43ea-be88-d6e79c48953b" name="Changes" comment="Temporarily disable websocket and http stuff, to prevent issues.">
-      <change afterPath="$PROJECT_DIR$/src/api/modrinth.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/types/adoptium.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/types/http.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/types/modrinth.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/types/spigot.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/plugins.ts" afterDir="false" />
+    <list default="true" id="45dc901f-6ded-43ea-be88-d6e79c48953b" name="Changes" comment="Update package and improve plugin handling&#10;&#10;Added new dependencies in package files and updated java paths. Also implemented functions to handle Spigot plugins and Modrinth plugins more efficiently. Furthermore, introduced error handling mechanisms to deal with plugin sources not found or when encountering unknown download sources. New files were created to accommodate these changes, ensuring code organization and readability.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/adoptium.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/adoptium.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/http.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/http.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/spigot.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/spigot.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/filesystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/filesystem.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +76,8 @@
       <workItem from="1711135527002" duration="1568000" />
       <workItem from="1711741322284" duration="4948000" />
       <workItem from="1711747342461" duration="11000" />
-      <workItem from="1711747360869" duration="5088000" />
+      <workItem from="1711747360869" duration="5598000" />
+      <workItem from="1711753174945" duration="2435000" />
     </task>
     <task id="LOCAL-00001" summary="Temporarily disable websocket and http stuff, to prevent issues.">
       <option name="closed" value="true" />
@@ -96,7 +87,15 @@
       <option name="project" value="LOCAL" />
       <updated>1711140444597</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Update package and improve plugin handling&#10;&#10;Added new dependencies in package files and updated java paths. Also implemented functions to handle Spigot plugins and Modrinth plugins more efficiently. Furthermore, introduced error handling mechanisms to deal with plugin sources not found or when encountering unknown download sources. New files were created to accommodate these changes, ensuring code organization and readability.">
+      <option name="closed" value="true" />
+      <created>1711753060087</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1711753060088</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -104,6 +103,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Temporarily disable websocket and http stuff, to prevent issues." />
-    <option name="LAST_COMMIT_MESSAGE" value="Temporarily disable websocket and http stuff, to prevent issues." />
+    <MESSAGE value="Update package and improve plugin handling&#10;&#10;Added new dependencies in package files and updated java paths. Also implemented functions to handle Spigot plugins and Modrinth plugins more efficiently. Furthermore, introduced error handling mechanisms to deal with plugin sources not found or when encountering unknown download sources. New files were created to accommodate these changes, ensuring code organization and readability." />
+    <option name="LAST_COMMIT_MESSAGE" value="Update package and improve plugin handling&#10;&#10;Added new dependencies in package files and updated java paths. Also implemented functions to handle Spigot plugins and Modrinth plugins more efficiently. Furthermore, introduced error handling mechanisms to deal with plugin sources not found or when encountering unknown download sources. New files were created to accommodate these changes, ensuring code organization and readability." />
   </component>
 </project>

@@ -77,6 +77,7 @@ if (!fs.existsSync(serverFilesPath)) fs.mkdirSync(serverFilesPath)
 if (!fs.existsSync('./bin')) fs.mkdirSync('./bin')
 if (!fs.existsSync('./bin/papermc')) fs.mkdirSync('./bin/papermc')
 if (!fs.existsSync('./bin/plugins')) fs.mkdirSync('./bin/plugins')
+if (!fs.existsSync('./manual_plugins')) fs.mkdirSync('./manual_plugins')
 
 function checkBinForPaperVersion (jarFileName: string, checksum?: string) {
   const filePath = `./bin/papermc/${jarFileName}`
@@ -117,7 +118,7 @@ async function checkForLatestGeyser () {
 async function checkForOtherPlugins (): Promise<boolean> {
   const otherPlugins = config.plugins.other
 
-  let manualDownloadRequired = true
+  let manualDownloadRequired = false
 
   for (const pluginKey of Object.keys(otherPlugins)) {
     const plugin = otherPlugins[pluginKey]
@@ -294,10 +295,20 @@ setupActiveJar(config.minecraft_version).then(async () => {
     fs.rmSync('./server/plugins/' + file)
   }
 
-  const newPluginFiles = fs.readdirSync('./bin/plugins')
+  const newPluginFiles = fs.readdirSync('./bin/plugins');
   for (const file of newPluginFiles) {
-    console.log('Copying to server plugins', file)
-    fs.copyFileSync('./bin/plugins/' + file, './server/plugins/' + file, fs.constants.COPYFILE_FICLONE)
+    console.log('Copying to server plugins', file);
+    try {
+      fs.copyFileSync('./bin/plugins/' + file, './server/plugins/' + file);
+    } catch (error) {
+      console.error('Error copying plugin Jar', error);
+    }
+  }
+
+  const manualPluginFiles = fs.readdirSync('./manual_plugins')
+  for (const file of manualPluginFiles) {
+    console.log('Copying to server manual plugins', file)
+    fs.copyFileSync('./manual_plugins/' + file, './server/plugins/' + file, fs.constants.COPYFILE_EXCL)
   }
 
   fs.writeFileSync('./server/eula.txt','#suck it\n#microsoft\neula=true') // Is this legal??

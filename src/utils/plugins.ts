@@ -160,6 +160,8 @@ export async function clearCachedPlugins (): Promise<void> {
 export async function downloadPlugins(): Promise<boolean> {
   let pauseAndWaitBeforeServerStart = false
 
+  await clearCachedPlugins()
+
   /**
    * Download EssentialsX and EssentialsX Assets
    */

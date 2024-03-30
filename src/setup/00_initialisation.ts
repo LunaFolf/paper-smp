@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import {setupPaperServerJar} from "./02_paper";
 import {checkForOpenJRE} from "./01_adoptium";
-import {clearCachedPlugins} from "../utils/plugins";
 
 /**
  * Check if the server-config.yml exists

@@ -1,22 +1,35 @@
-export async function get (url: string): Promise<Response | null> {
-  const response = await fetch(url, {
-    headers: {
-      'User-Agent': 'LunaFolf <luna@folf.io> discord: @lunafolf'
-    }
-  })
-    .catch(err => {
-      // TODO: Setup an error handler for more advanced error handling/reporting/logging/etc
-      console.error('Error fetching', url, err.message)
-      return
-    })
+function convertToUrlParams(params?: urlParams): URLSearchParams {
+  const urlParams = new URLSearchParams()
 
-  if (!response) return null // TODO: Just... Do this better...
+  if (!params) return urlParams
 
-  if (!response.ok) {
-    console.error('Error fetching', url)
-    console.error(response)
-    return null
+  for (const [key, value] of Object.entries(params)) {
+    if (value.toString().length) urlParams.set(key, value?.toString() || JSON.stringify(value))
   }
 
-  return response
+  return urlParams
+}
+
+export async function get(url: string, params?: urlParams): Promise<Response | null> {
+  try {
+    const urlParams = convertToUrlParams(params)
+
+    const headers = {
+      'User-Agent': 'LunaFolf <luna@folf.io> discord: @lunafolf'
+    }
+
+    const fetchURL = url + '?' + new URLSearchParams(urlParams)
+
+    // console.debug({
+    //   fetchURL,
+    //   url,
+    //   params,
+    //   headers
+    // })
+
+    return await fetch(fetchURL, {headers})
+  } catch (error) {
+    console.error(error)
+    return null
+  }
 }

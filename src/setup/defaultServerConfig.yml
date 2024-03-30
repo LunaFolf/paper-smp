@@ -1,0 +1,22 @@
+minecraft_version: '1.20.4'
+plugins:
+  essentials_x:
+    - 'EssentialsX'
+    - 'EssentialsXChat'
+    - 'EssentialsXGeoIP'
+    - 'EssentialsXSpawn'
+
+  spigot:
+    - 40313
+    - 8631
+    - 62325
+    - 60088
+    - 28140
+    - 390
+    - 34315
+    - 51856
+    - 72020
+
+  modrinth:
+    - mapify
+    - worldedit

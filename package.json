@@ -1,16 +1,33 @@
 {
+  "main": "index.ts",
+  "scripts": {
+    "serve": "NODE_ENV=development ts-node src/index.ts",
+    "compile": "rm -rf dist && NODE_ENV=production tsc",
+    "build": "npm run compile && pkg --compress GZip dist/index.js -o 'builds/paper-smp' -c 'pkg-config.json'",
+    "postcompile": "cp src/setup/defaultServerConfig.yml dist/setup/defaultServerConfig.yml"
+  },
   "dependencies": {
     "@types/luxon": "^3.3.2",
     "@types/strip-color": "^0.1.0",
+    "@types/ws": "^8.5.10",
     "@types/yaml": "^1.9.7",
     "color": "^4.2.3",
     "colors": "^1.4.0",
+    "decompress": "^4.2.1",
     "dotenv": "^16.3.1",
+    "figlet": "^1.6.0",
     "luxon": "^3.4.3",
+    "pkg": "^5.8.1",
     "strip-color": "^0.1.0",
+    "ts": "^0.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "ws": "^8.16.0",
     "yaml": "^2.3.2"
   },
   "devDependencies": {
-    "@types/node": "^20.8.3"
+    "@types/decompress": "^4.2.7",
+    "@types/figlet": "^1.5.8",
+    "@types/node": "^20.11.29"
   }
 }

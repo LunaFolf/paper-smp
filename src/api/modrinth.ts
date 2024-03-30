@@ -8,13 +8,6 @@ export async function getModrinthProjectCompatibleVersion (
   game_versions?: ModrinthProjectVersion["game_versions"],
 ): Promise<ModrinthProjectVersion | null> {
   try {
-    console.debug('Getting modrinth project...', {
-      projectID,
-      loaders,
-      game_versions
-    })
-
-
     const response = await get(`https://api.modrinth.com/v2/project/${projectID}/version`, {
       loaders: loaders || [],
       game_versions: game_versions || [],

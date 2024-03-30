@@ -1,8 +1,10 @@
 {
+  "main": "index.ts",
   "scripts": {
     "serve": "NODE_ENV=development ts-node src/index.ts",
-    "prebuild": "rm -rf dist && NODE_ENV=production tsc",
-    "build": "pkg --compress GZip dist/index.js -o 'builds/paper-smp' -c 'pkg-config.json'"
+    "compile": "rm -rf dist && NODE_ENV=production tsc",
+    "build": "npm run compile && pkg --compress GZip dist/index.js -o 'builds/paper-smp' -c 'pkg-config.json'",
+    "postcompile": "cp src/setup/defaultServerConfig.yml dist/setup/defaultServerConfig.yml"
   },
   "dependencies": {
     "@types/luxon": "^3.3.2",

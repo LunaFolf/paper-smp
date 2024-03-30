@@ -11,6 +11,6 @@
     "strict": true,
     "alwaysStrict": true,
     "outDir": "dist",
-    "sourceMap": true,
+    "sourceMap": true
   }
 }

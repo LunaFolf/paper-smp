@@ -21,23 +21,46 @@ type ModrinthVersionDependency = {
   dependency_type: "required" | "optional" | "incompatible" | "embedded"
 }
 
-type ModrinthProjectVersion = {
-  id: string,
-  game_versions: string[],
-  loaders: string[],
-  project_id: ModrinthProject["id"],
-  author_id: string,
-  featured: boolean,
+type ModrinthPluginType = "mod" | "plugin" | "datapack" | "shader" | "resourcepack" | "modpack"
+
+// interface ModrinthPluginVersionV3 {
+//   id: string,
+//   project_id: string,
+//   author_id: string,
+//   featured: boolean,
+//   name: string,
+//   version_number: string,
+//   project_types: [ ModrinthPluginType ],
+//   games: [ "minecraft-java" ],
+//   changelog: string,
+//   date_published: string,
+//   downloads: number,
+//   version_type: "release" | "beta" | "alpha",
+//   status: "listed" | "archived" | "draft" | "unlisted" | "scheduled" | "unknown",
+//   requested_status: "listed" | "archived" | "draft" | "unlisted" | null,
+//   files: ModrinthFile[],
+//   dependencies: ModrinthVersionDependency[],
+//   loaders: serverConfig["mod_loader"][],
+//   ordering: null,
+//   game_versions: serverConfig["minecraft_version"][]
+// }
+
+interface ModrinthProjectVersion {
   name: string,
   version_number: string,
   changelog: string | null,
-  changelog_url: string | null, // DEPRECIATED: Only kept for legacy compatibility. Will be null in all new stuff.
-  date_published: string,
-  downloads: number,
+  dependencies: ModrinthVersionDependency[],
+  game_versions: serverConfig["minecraft_version"],
   version_type: "release" | "beta" | "alpha",
+  loaders: serverConfig["mod_loader"][],
+  featured: boolean,
   status: "listed" | "archived" | "draft" | "unlisted" | "scheduled" | "unknown",
   requested_status: "listed" | "archived" | "draft" | "unlisted" | null,
-  files: ModrinthFile[],
-  dependencies: ModrinthVersionDependency[]
-
+  id: string,
+  project_id: string,
+  author_id: string,
+  date_published: string,
+  downloads: number,
+  changelog_url: string | null,
+  files: ModrinthFile[]
 }

@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import {setupPaperServerJar} from "./02_paper";
+import {setupServerJar} from "./02_mcloader";
 import {checkForOpenJRE} from "./01_adoptium";
 
 /**
@@ -28,10 +28,16 @@ if (!fs.existsSync('./server-config.yml')) {
 
 const requiredPaths = [
   './bin/openjre',
-  './bin/papermc',
+  './bin/loaders',
+
   './bin/plugins',
+  './bin/mods',
+
   './manual_plugins',
-  './server/plugins'
+  './manual_mods',
+
+  './server/plugins',
+  './server/mods'
 ]
 
 requiredPaths.forEach(requiredPath => {
@@ -50,12 +56,12 @@ requiredPaths.forEach(requiredPath => {
  * Sets up the Minecraft server by installing the necessary server jar and verifying the availability of the Java Runtime Environment (JRE).
  *
  * @throws {Error} - Throws an error if the Java executable cannot be found.
- * @returns {Promise<void>} - A promise that resolves once the setup is complete, or rejects if an error occurs.
+ * @returns {Promise<string>} - A promise that resolves once the setup is complete, or rejects if an error occurs.
  */
 
 export async function setupServer(): Promise<string> {
-  // Setup the minecraft server jar (only supports paper for now)
-  await setupPaperServerJar()
+  // Setup the minecraft server jar
+  await setupServerJar()
 
   const javaPath = await checkForOpenJRE()
   if (!javaPath) throw new Error('Unable to find java exec, wah wah')

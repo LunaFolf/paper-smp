@@ -1,3 +1,5 @@
+import fs from "fs";
+
 export function writeToFile(reader: any, stream: any): Promise<void> {
   return new Promise(async (resolve, reject) => {
     try {
@@ -22,3 +24,12 @@ export function writeToFile(reader: any, stream: any): Promise<void> {
     }
   });
 }
+
+export async function copyServerJar(fromBinPath: string, toServerPath: string): Promise<void> { {
+  if (fs.existsSync(toServerPath)) fs.rmSync(toServerPath);
+
+  console.log('Copying', fromBinPath, 'to', toServerPath);
+
+  fs.copyFileSync(fromBinPath, toServerPath);
+
+}}

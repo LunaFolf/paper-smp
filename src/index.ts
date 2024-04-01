@@ -1,16 +1,20 @@
 require('dotenv').config()
 require('colors')
+
 import fs from 'fs'
+
 import {waitForKey} from "./utils/input"
 import {downloadPlugins} from "./utils/plugins";
+import {downloadMods} from "./utils/mods";
 import {setupServer} from "./setup/00_initialisation";
 import {startServer} from "./utils/process";
 
 setupServer()
   .then(async javaPath => {
-    await downloadPlugins()
+    let waitBeforeStart = false
 
-    const waitBeforeStart = await downloadPlugins()
+    waitBeforeStart = await downloadPlugins()
+    waitBeforeStart = await downloadMods()
 
     if (waitBeforeStart) {
       console.log('[PAUSED] press ENTER to continue...')

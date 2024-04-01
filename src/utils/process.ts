@@ -10,7 +10,7 @@ const spawnArgs = [
   '-Xms5000M',
   '-Xmx5000M',
   '-jar',
-  'paper.jar',
+  'server.jar',
   'nogui'
 ]
 

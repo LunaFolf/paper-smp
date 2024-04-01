@@ -4,9 +4,7 @@ import fs from "fs";
 let config: serverConfig
 
 export function getConfig() {
-  console.debug('getting config')
   if (!config) {
-    console.debug('no config saved, getting new')
     config = yaml.parse(fs.readFileSync('./server-config.yml').toString())
   }
 

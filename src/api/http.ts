@@ -22,6 +22,7 @@ export async function get(url: string, params?: urlParams): Promise<Response | n
 
     // console.debug({
     //   fetchURL,
+    //   urlParams,
     //   url,
     //   params,
     //   headers

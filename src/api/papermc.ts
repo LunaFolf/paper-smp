@@ -27,7 +27,7 @@ type PaperBuild = {
   }
 }
 
-export async function getBuilds (minecraftVersion: string, build?: number): Promise<PaperBuild[] | null> {
+export async function getPaperBuilds (minecraftVersion: string, build?: number): Promise<PaperBuild[] | null> {
   if (build) {
     const response = await get(`https://papermc.io/api/v2/projects/paper/versions/${minecraftVersion}/builds/${build}`)
     if (!response) return null
@@ -45,20 +45,28 @@ export async function getBuilds (minecraftVersion: string, build?: number): Prom
   return data.builds
 }
 
-export async function downloadBuildJar (minecraftVersion: string, build: number, fileName: string = `paper-${minecraftVersion}-${build}.jar`) {
+export async function downloadPaperBuildJar (
+  minecraftVersion: string,
+  build: number,
+  fileName: string = `paper-${minecraftVersion}-${build}.jar`
+): Promise<boolean> {
   try {
-    const response = await get(`https://papermc.io/api/v2/projects/paper/versions/${minecraftVersion}/builds/${build}/downloads/${fileName}`);
+    const response = await get(
+      `https://papermc.io/api/v2/projects/paper/versions/${minecraftVersion}/builds/${build}/downloads/${fileName}`
+    );
     if (!response || !response.body) {
       console.error(response)
-      throw new Error('Something aint right, chief')
+      return false;
     }
     const reader = response.body.getReader();
-    const stream = createWriteStream(`./bin/papermc/${fileName}`);
+    const stream = createWriteStream(`./bin/loaders/${fileName}`);
 
     await writeToFile(reader, stream);
 
+    return true
+
   } catch (error) {
     console.error('An error occurred: ', error);
+    return false;
   }
-  return null;
 }

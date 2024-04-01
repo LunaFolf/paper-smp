@@ -5,6 +5,8 @@ import fs from "fs";
 import {getConfig, getGameMainVersion} from "./config";
 import {checkForLatestGeyser} from "../setup/03_geyser";
 import {downloadFloodgate, downloadGeyser} from "../api/geyser";
+import {canLoaderUsePlugins} from "./server";
+import {$t} from "./translations";
 
 const config = getConfig()
 
@@ -12,22 +14,12 @@ const serverPluginsPath = "./server/plugins";
 const binPluginsPath = "./bin/plugins";
 const manualPluginsPath = "./manual_plugins";
 
-type downloadPluginResult = {
-  success: boolean,
-  manualDownloadRequired: boolean
-}
-
-// TODO: name this something better
-type allPluginsResult = {
-  pauseAndWait: boolean, // Pause the launch of the server, and wait for the user to confirm start
-}
-
 /**
  * Download a spigot plugin, using the given SpigotResource.
  * @param resource
  */
 
-export async function downloadSpigotPlugin (resource: SpigotResource): Promise<downloadPluginResult> {
+export async function downloadSpigotPlugin (resource: SpigotResource): Promise<boolean> {
   if (!resource) {
     console.error('Missing Resource! Can\'t download nothing!')
     throw Error('Missing Resource! Can\'t download nothing!')
@@ -43,16 +35,14 @@ export async function downloadSpigotPlugin (resource: SpigotResource): Promise<d
         console.error('Manual download of ' + resource.id +' required, you can download from the URL here:', resource.file.externalUrl)
         console.error('[We\'ll pause the server launch for you so you have time to download it, to opt out of this use --no-pause]')
 
-        return { success: false, manualDownloadRequired: true }
+        return false
       default:
         console.error('Unknown external source', site)
-        return { success: false, manualDownloadRequired: true }
+        return false
     }
   }
 
-  const success = await downloadSpigotResource(resource)
-
-  return { success, manualDownloadRequired: !success }
+  return await downloadSpigotResource(resource)
 }
 
 /**
@@ -60,15 +50,13 @@ export async function downloadSpigotPlugin (resource: SpigotResource): Promise<d
  * @param resource
  */
 
-export async function downloadModrinthPlugin (resource: ModrinthProjectVersion): Promise<downloadPluginResult> {
+export async function downloadModrinthPlugin (resource: ModrinthProjectVersion): Promise<boolean> {
   if (!resource) {
     console.error('Missing Resource! Can\'t download nothing!')
     throw Error('Missing Resource! Can\'t download nothing!')
   }
 
-  const success = await downloadModrinthProject(resource)
-
-  return { success, manualDownloadRequired: !success }
+  return await downloadModrinthProject(resource, 'plugin')
 }
 
 /**
@@ -76,7 +64,7 @@ export async function downloadModrinthPlugin (resource: ModrinthProjectVersion):
  * For each plugin that is there, get the resource and attempt to download it.
  */
 
-export async function checkForSpigotPlugins (plugins: serverConfig['plugins']['spigot']): Promise<allPluginsResult> {
+export async function checkForSpigotPlugins (plugins: SpigotResource["id"][]): Promise<boolean> {
   let pauseAndWait = false
 
   for (const resourceID of plugins) {
@@ -88,13 +76,10 @@ export async function checkForSpigotPlugins (plugins: serverConfig['plugins']['s
       break
     }
 
-    const download = await downloadSpigotPlugin(resource)
-    if (!download.success || download.manualDownloadRequired) {
-      pauseAndWait = true
-    }
+    pauseAndWait = !(await downloadSpigotPlugin(resource))
   }
 
-  return { pauseAndWait }
+  return pauseAndWait
 }
 
 /**
@@ -102,7 +87,7 @@ export async function checkForSpigotPlugins (plugins: serverConfig['plugins']['s
  * For each plugin that is there, get the resource and attempt to download it.
  */
 
-export async function checkForModrinthPlugins (plugins: serverConfig['plugins']['modrinth']): Promise<allPluginsResult> {
+export async function checkForModrinthPlugins (plugins: ModrinthProject["id"][]): Promise<boolean> {
   let pauseAndWait = false
 
   for (const resourceID of plugins) {
@@ -117,13 +102,11 @@ export async function checkForModrinthPlugins (plugins: serverConfig['plugins'][
       break
     }
 
-    const download = await downloadModrinthPlugin(resource)
-    if (!download.success || download.manualDownloadRequired) {
-      pauseAndWait = true
-    }
+    const success = await downloadModrinthPlugin(resource)
+    pauseAndWait = !success
   }
 
-  return { pauseAndWait }
+  return pauseAndWait
 }
 
 /**
@@ -160,18 +143,36 @@ export async function clearCachedPlugins (): Promise<void> {
 export async function downloadPlugins(): Promise<boolean> {
   let pauseAndWaitBeforeServerStart = false
 
-  await clearCachedPlugins()
+  if (!canLoaderUsePlugins(config.mod_loader)) {
+    console.error(
+      $t('errors.modloaders.plugins_not_supported')
+    )
+
+    return pauseAndWaitBeforeServerStart
+  }
+
+  if (!config.plugins) {
+    console.log(
+      $t('info.no_plugins_detected')
+    )
+
+    return pauseAndWaitBeforeServerStart
+  }
+
+  // await clearCachedPlugins()
 
   /**
    * Download EssentialsX and EssentialsX Assets
    */
-    const essentialsBuild = await checkForLatestEssentialPlugins()
-    for (const essentialsAsset of essentialsBuild.assets) {
-      const isEssentialsAssetEnabled = config.plugins.essentials_x.some(enabledAsset => essentialsAsset.name.startsWith(enabledAsset + '-'))
+    if (config.plugins.essentials_x) {
+      const essentialsBuild = await checkForLatestEssentialPlugins()
+      for (const essentialsAsset of essentialsBuild.assets) {
+        const isEssentialsAssetEnabled = config.plugins.essentials_x.some(enabledAsset => essentialsAsset.name.startsWith(enabledAsset + '-'))
 
-      if (isEssentialsAssetEnabled) {
-        console.log('Downloading essentials asset: ', essentialsAsset.name)
-        await downloadEssentialsXAsset(essentialsBuild.tag_name, essentialsAsset.name)
+        if (isEssentialsAssetEnabled) {
+          console.log('Downloading essentials asset: ', essentialsAsset.name)
+          await downloadEssentialsXAsset(essentialsBuild.tag_name, essentialsAsset.name)
+        }
       }
     }
 
@@ -189,14 +190,18 @@ export async function downloadPlugins(): Promise<boolean> {
   /**
    * Download Spigot Plugins
    */
-  await checkForSpigotPlugins(config.plugins.spigot)
-    .then(({ pauseAndWait }) => pauseAndWaitBeforeServerStart = pauseAndWait)
+  if (config.plugins.spigot) {
+    await checkForSpigotPlugins(config.plugins.spigot)
+      .then(pauseAndWait => pauseAndWaitBeforeServerStart = pauseAndWait)
+  }
 
   /**
    * Download Modrinth Plugins
    */
-  await checkForModrinthPlugins(config.plugins.modrinth)
-    .then(({ pauseAndWait }) => pauseAndWaitBeforeServerStart = pauseAndWait)
+  if (config.plugins.modrinth) {
+    await checkForModrinthPlugins(config.plugins.modrinth)
+      .then(pauseAndWait => pauseAndWaitBeforeServerStart = pauseAndWait)
+  }
 
   /**
    * Remove existing server plugins, copy new ones and also copy manual ones.

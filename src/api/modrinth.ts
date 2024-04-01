@@ -7,16 +7,19 @@ export async function getModrinthProjectCompatibleVersion (
   loaders?: ModrinthProjectVersion["loaders"],
   game_versions?: ModrinthProjectVersion["game_versions"],
 ): Promise<ModrinthProjectVersion | null> {
+  // console.debug({
+  //   projectID,
+  //   loaders,
+  //   game_versions
+  // })
   try {
-    const response = await get(`https://api.modrinth.com/v3/project/${projectID}/version`, {
+    const response = await get(`https://api.modrinth.com/v2/project/${projectID}/version`, {
       loaders: JSON.stringify(loaders || []),
       game_versions: JSON.stringify(game_versions || []),
     })
 
     if (response) {
       const data = await response.json();
-
-      console.log(data)
 
       if (data.error) {
         console.error('Error getting modrinth project', data)
@@ -42,12 +45,10 @@ export async function downloadModrinthProject (resource: ModrinthProjectVersion,
       return false
     }
 
-    console.log("Downloading Modrinth resource", firstFile.filename)
-
     const response = await get(firstFile.url)
     if (!response || !response.body) {
       console.error(response)
-      throw new Error('Something aint right, chief')
+      return false
     }
 
     const reader = response.body.getReader();

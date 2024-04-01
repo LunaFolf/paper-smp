@@ -4,29 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="45dc901f-6ded-43ea-be88-d6e79c48953b" name="Changes" comment="latest (none functional)">
-      <change afterPath="$PROJECT_DIR$/src/api/fabric.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/loaders/fabric.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/loaders/paper.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/mods.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/server.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/translations.ts" afterDir="false" />
+    <list default="true" id="45dc901f-6ded-43ea-be88-d6e79c48953b" name="Changes" comment="Improve mod downloading and syncing process&#10;&#10;This update improves the mod downloading and syncing process by removing existing server mods, copying new ones and manually added ones. It ensures the deletion of old mods andl adds or updates mod files to the server directory as necessary. Furthermore, it also includes dependency checking for each downloaded mod and provides informative logging during the mod downloading process.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/http.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/http.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/modrinth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/modrinth.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/papermc.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/papermc.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/setup/00_initialisation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/setup/00_initialisation.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/setup/02_paper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/setup/02_mcloader.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/setup/defaultServerConfig.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/setup/defaultServerConfig.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types/modrinth.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/modrinth.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/server.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/server.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/filesystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/filesystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/plugins.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/plugins.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/process.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/process.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/mods.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/mods.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/translations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/translations.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +90,7 @@
       <workItem from="1711909883739" duration="22000" />
       <workItem from="1711912359870" duration="119000" />
       <workItem from="1711912646420" duration="116000" />
-      <workItem from="1711913061013" duration="21490000" />
+      <workItem from="1711913061013" duration="24308000" />
     </task>
     <task id="LOCAL-00001" summary="Temporarily disable websocket and http stuff, to prevent issues.">
       <option name="closed" value="true" />
@@ -141,7 +124,15 @@
       <option name="project" value="LOCAL" />
       <updated>1711767314803</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="latest (none functional)">
+      <option name="closed" value="true" />
+      <created>1711942112909</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1711942112909</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -165,6 +156,7 @@
     <MESSAGE value="Refactor writeToFile function and improve plugin handling&#10;&#10;The writeToFile function in filesystem.ts was refactored to better handle buffers and error handling. Plugin handling was also improved in index.ts, including error checking during copying and support for manual plugins. Lastly, the Spigot API call was fixed in spigot.ts." />
     <MESSAGE value="Clear cached plugins before download&#10;&#10;This commit removes the clearCachedPlugins function from the initialisation file and calls it in the downloadPlugins function. The purpose is to ensure that old cached plugins are cleared before new ones are downloaded." />
     <MESSAGE value="latest (none functional)" />
-    <option name="LAST_COMMIT_MESSAGE" value="latest (none functional)" />
+    <MESSAGE value="Improve mod downloading and syncing process&#10;&#10;This update improves the mod downloading and syncing process by removing existing server mods, copying new ones and manually added ones. It ensures the deletion of old mods andl adds or updates mod files to the server directory as necessary. Furthermore, it also includes dependency checking for each downloaded mod and provides informative logging during the mod downloading process." />
+    <option name="LAST_COMMIT_MESSAGE" value="Improve mod downloading and syncing process&#10;&#10;This update improves the mod downloading and syncing process by removing existing server mods, copying new ones and manually added ones. It ensures the deletion of old mods andl adds or updates mod files to the server directory as necessary. Furthermore, it also includes dependency checking for each downloaded mod and provides informative logging during the mod downloading process." />
   </component>
 </project>

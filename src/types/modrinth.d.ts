@@ -50,7 +50,7 @@ interface ModrinthProjectVersion {
   version_number: string,
   changelog: string | null,
   dependencies: ModrinthVersionDependency[],
-  game_versions: serverConfig["minecraft_version"],
+  game_versions: serverConfig["minecraft_version"][],
   version_type: "release" | "beta" | "alpha",
   loaders: serverConfig["mod_loader"][],
   featured: boolean,

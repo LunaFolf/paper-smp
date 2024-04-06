@@ -42,7 +42,9 @@ export async function downloadMods(): Promise<void> {
   const modsToCopy: string[] = []
 
   await checkForModrinthMods(config.mods.modrinth).then(mods => {
-    modsToCopy.push(...mods)
+    mods.forEach(mod => {
+      if (!modsToCopy.includes(mod)) modsToCopy.push(mod)
+    })
   })
 
   /**
@@ -98,7 +100,9 @@ export async function checkForModrinthMods(mods: ModrinthProject["id"][]): Promi
       $t('info.checking.mod', { modName: resource.name })
     )
 
-    modNames.push(...(await downloadModrinthMod(resource)))
+    const mods = await downloadModrinthMod(resource)
+
+    modNames.push(...mods)
   }
 
   return modNames
@@ -112,6 +116,8 @@ export async function downloadModrinthMod (resource: ModrinthProjectVersion): Pr
   }
 
   const modNames: string[] = []
+
+  modNames.push(resource.files[0].filename)
 
   for (const dependency of resource.dependencies) {
     const config = getConfig()
@@ -129,19 +135,19 @@ export async function downloadModrinthMod (resource: ModrinthProjectVersion): Pr
         break
       }
 
-      modNames.push(...(await downloadModrinthMod(dependencyResource)))
+      const mods = await downloadModrinthMod(dependencyResource)
+
+      modNames.push(...mods)
     }
   }
 
   const alreadyDownloaded = await checkIfModDownloaded(resource.files[0].filename)
 
-  if (alreadyDownloaded) return []
+  if (alreadyDownloaded) return modNames
 
   __log(
     $t('info.downloading.mod', { modName: resource.name })
   )
-
-  modNames.push(resource.files[0].filename)
 
   await downloadModrinthProject(resource, 'mod')
 

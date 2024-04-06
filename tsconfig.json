@@ -11,6 +11,25 @@
     "strict": true,
     "alwaysStrict": true,
     "outDir": "dist",
-    "sourceMap": true
-  }
+    "sourceMap": true,
+
+    "typeRoots" : ["./src/types", "./node_modules/@types"]
+  },
+
+  "ts-node": {
+    "files": true
+  },
+
+  "files": [
+    "src/index.ts",
+    "src/types/adoptium.d.ts",
+    "src/types/essentialsx.d.ts",
+    "src/types/modrinth.d.ts",
+    "src/types/server.d.ts",
+    "src/types/spigot.d.ts"
+  ],
+
+  "include": [
+    "src/**/*"
+  ]
 }

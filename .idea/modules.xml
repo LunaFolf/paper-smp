@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/paper-smp.iml" filepath="$PROJECT_DIR$/.idea/paper-smp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../paper-smp-web/.idea/web.iml" filepath="$PROJECT_DIR$/../paper-smp-web/.idea/web.iml" />
     </modules>
   </component>
 </project>

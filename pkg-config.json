@@ -6,6 +6,7 @@
   "assets": [
     "node_modules/figlet/**/*.flf",
     "**/*.yml",
-    "src/setup/defaultServerConfig.yml"
+    "src/setup/defaultServerConfig.yml",
+    "**/*.env"
   ]
 }

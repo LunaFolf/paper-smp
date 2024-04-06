@@ -1,6 +1,7 @@
 import {get} from './http'
 import {createWriteStream} from "fs"
 import {writeToFile} from "../utils/filesystem"
+import {__error} from "../utils/logging";
 
 type GeyserDownloadType = 'bungeecord' | 'fabric' | 'spigot' | 'standalone' | 'velocity'
 type FloodgateDownloadType = 'bungee' | 'spigot' | 'velocity'
@@ -44,7 +45,7 @@ export async function downloadGeyser (version: string, build: number, fileName: 
   try {
     const response = await get(`https://download.geysermc.org/v2/projects/geyser/versions/${version}/builds/${build}/downloads/spigot`);
     if (!response || !response.body) {
-      console.error(response)
+      __error(response)
       throw new Error('Something aint right, chief')
     }
     const reader = response.body.getReader();
@@ -53,14 +54,14 @@ export async function downloadGeyser (version: string, build: number, fileName: 
     await writeToFile(reader, stream);
 
   } catch (error) {
-    console.error('An error occurred: ', error);
+    __error('An error occurred: ', error);
   }
 }
 export async function downloadFloodgate (version: string, build: number, fileName: string = `floodgate-spigot.jar`) {
   try {
     const response = await get(`https://download.geysermc.org/v2/projects/floodgate/versions/${version}/builds/${build}/downloads/spigot`);
     if (!response || !response.body) {
-      console.error(response)
+      __error(response)
       throw new Error('Something aint right, chief')
     }
     const reader = response.body.getReader();
@@ -69,6 +70,6 @@ export async function downloadFloodgate (version: string, build: number, fileNam
     await writeToFile(reader, stream);
 
   } catch (error) {
-    console.error('An error occurred: ', error);
+    __error('An error occurred: ', error);
   }
 }

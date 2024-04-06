@@ -23,28 +23,6 @@ type ModrinthVersionDependency = {
 
 type ModrinthPluginType = "mod" | "plugin" | "datapack" | "shader" | "resourcepack" | "modpack"
 
-// interface ModrinthPluginVersionV3 {
-//   id: string,
-//   project_id: string,
-//   author_id: string,
-//   featured: boolean,
-//   name: string,
-//   version_number: string,
-//   project_types: [ ModrinthPluginType ],
-//   games: [ "minecraft-java" ],
-//   changelog: string,
-//   date_published: string,
-//   downloads: number,
-//   version_type: "release" | "beta" | "alpha",
-//   status: "listed" | "archived" | "draft" | "unlisted" | "scheduled" | "unknown",
-//   requested_status: "listed" | "archived" | "draft" | "unlisted" | null,
-//   files: ModrinthFile[],
-//   dependencies: ModrinthVersionDependency[],
-//   loaders: serverConfig["mod_loader"][],
-//   ordering: null,
-//   game_versions: serverConfig["minecraft_version"][]
-// }
-
 interface ModrinthProjectVersion {
   name: string,
   version_number: string,

@@ -2,6 +2,7 @@ import {get} from "./http";
 import {create} from "node:domain";
 import {createWriteStream} from "fs";
 import {writeToFile} from "../utils/filesystem";
+import {__error} from "../utils/logging";
 
 type FabricLoaderVersion = {
   loader: {
@@ -53,7 +54,7 @@ export async function downloadFabricServerJar (
       `https://meta.fabricmc.net/v2/versions/loader/${minecraftVersion}/${loaderVersion}/${installerVersion}/server/jar`
     )
     if (!response || !response.body) {
-      console.error(response)
+      __error(response)
       return false
     }
 
@@ -64,7 +65,7 @@ export async function downloadFabricServerJar (
 
     return true
   } catch (error) {
-    console.error('An error occurred: ', error);
+    __error('An error occurred: ', error);
     return false
   }
 }

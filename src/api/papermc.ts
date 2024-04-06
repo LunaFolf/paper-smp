@@ -1,6 +1,7 @@
 import { get } from './http'
 import { createWriteStream } from "fs"
 import {writeToFile} from "../utils/filesystem"
+import {__error} from "../utils/logging";
 
 type PaperBuildsResponse = {
   project_id: 'paper',
@@ -55,7 +56,7 @@ export async function downloadPaperBuildJar (
       `https://papermc.io/api/v2/projects/paper/versions/${minecraftVersion}/builds/${build}/downloads/${fileName}`
     );
     if (!response || !response.body) {
-      console.error(response)
+      __error(response)
       return false;
     }
     const reader = response.body.getReader();
@@ -66,7 +67,7 @@ export async function downloadPaperBuildJar (
     return true
 
   } catch (error) {
-    console.error('An error occurred: ', error);
+    __error('An error occurred: ', error);
     return false;
   }
 }

@@ -3,18 +3,27 @@ import {canLoaderUseMods} from "./server";
 import {$t} from "./translations";
 import {downloadModrinthProject, getModrinthProjectCompatibleVersion} from "../api/modrinth";
 import fs from "fs";
-
-const config = getConfig()
+import {__error, __log} from "./logging";
+import {createImportableZIP} from "./filesystem";
 
 const serverModsPath = "./server/mods";
 const binModsPath = "./bin/mods";
 const manualModsPath = "./manual_mods";
 
+export async function clearCachedMods (): Promise<void> {
+  fs.readdir('./bin/mods', (err, files) => {
+    for (const file of files) {
+      fs.rmSync(`./bin/mods/` + file)
+    }
+  })
+}
+
 export async function downloadMods(): Promise<boolean> {
+  const config = getConfig();
   let pauseAndWaitBeforeServerStart = false
 
   if (!canLoaderUseMods(config.mod_loader)) {
-    console.error(
+    __error(
       $t('errors.modloaders.mods_not_supported')
     )
 
@@ -22,12 +31,14 @@ export async function downloadMods(): Promise<boolean> {
   }
 
   if (!config.mods || !config.mods.modrinth) {
-    console.log(
+    __log(
       $t('info.no_mods_detected')
     )
 
     return pauseAndWaitBeforeServerStart
   }
+
+  await clearCachedMods()
 
   await checkForModrinthMods(config.mods.modrinth)
     .then(pauseAndWait => pauseAndWaitBeforeServerStart = pauseAndWait)
@@ -37,29 +48,35 @@ export async function downloadMods(): Promise<boolean> {
    */
   const existingModFiles = fs.readdirSync(serverModsPath).filter(file => file.endsWith('.jar'))
   for (const file of existingModFiles) {
-    console.log('Removing Server mods Jar', file)
+    __log('Removing Server mods Jar', file)
     fs.rmSync(`${serverModsPath}/${file}`)
   }
 
   const newModFiles = fs.readdirSync(binModsPath);
   for (const file of newModFiles) {
-    console.log('Copying to server mods', file);
+    __log('Copying to server mods', file);
     try {
       fs.copyFileSync(`${binModsPath}/${file}`, `${serverModsPath}/${file}`);
     } catch (error) {
-      console.error('Error copying mod Jar', error);
+      __error('Error copying mod Jar', error);
     }
   }
   const manualModFiles = fs.readdirSync(manualModsPath)
   for (const file of manualModFiles) {
-    console.log('Copying to server manual mods', file)
+    __log('Copying to server manual mods', file)
     fs.copyFileSync(`${manualModsPath}/${file}`, `${serverModsPath}/${file}`, fs.constants.COPYFILE_EXCL)
   }
+
+  createImportableZIP([
+    ...newModFiles.map(f => `${binModsPath}/${f}`),
+    ...manualModFiles.map(f => `${manualModsPath}/${f}`)
+  ], 'modExport.zip')
 
   return pauseAndWaitBeforeServerStart
 }
 
 export async function checkForModrinthMods(mods: ModrinthProject["id"][]): Promise<boolean> {
+  const config = getConfig();
   let pauseAndWait = false
 
   for (const resourceID of mods) {
@@ -70,14 +87,14 @@ export async function checkForModrinthMods(mods: ModrinthProject["id"][]): Promi
     )
 
     if (!resource) {
-      console.error(
+      __error(
         $t('errors.modloaders.modrinth.unable_to_find', { resourceID })
       )
       pauseAndWait = true
       break
     }
 
-    console.log(
+    __log(
       $t('info.downloading.mod', { modName: resource.name })
     )
 
@@ -92,12 +109,13 @@ export async function checkForModrinthMods(mods: ModrinthProject["id"][]): Promi
 export async function downloadModrinthMod (resource: ModrinthProjectVersion): Promise<boolean> {
   let pauseAndWait = false
   if (!resource) {
-    console.error(
+    __error(
       $t('errors.modloaders.modrinth.missing_resource')
     )
   }
 
   for (const dependency of resource.dependencies) {
+    const config = getConfig()
     if (resource.project_id && ["required"].includes(dependency.dependency_type)) {
       const dependencyResource = await getModrinthProjectCompatibleVersion(
         dependency.project_id as string,
@@ -106,14 +124,14 @@ export async function downloadModrinthMod (resource: ModrinthProjectVersion): Pr
       )
 
       if (!dependencyResource) {
-        console.error(
+        __error(
           $t('errors.modloaders.modrinth.unable_to_find', { resourceID: resource.project_id })
         )
         pauseAndWait = true
         break
       }
 
-      console.log(
+      __log(
         $t('info.downloading.mod', { modName: dependencyResource.name })
       )
 

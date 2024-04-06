@@ -1,17 +1,79 @@
 minecraft_version: '1.20.4'
 mod_loader: 'paper'
+
+discord_ids: []
+
 mods:
-  modrinth:
-    - create
+  modrinth: []
 plugins:
-  essentials_x:
-    - 'EssentialsX'
-    - 'EssentialsXChat'
-    - 'EssentialsXGeoIP'
-    - 'EssentialsXSpawn'
+  essentials_x: []
+  spigot: []
+  modrinth: []
 
-  spigot:
-    - 62325
+launcher_settings:
+  auto_start: false # Should the MC server automatically start on launcher start? configurable in the web panel
+  auto_restart: false # Should the MC server automatically restart after a crash? configurable in the web panel
+  check_for_updates: 60 # Check for plugin, mod, and loader updates every 60 minutes
+  web_port: 4321
+  redirect_uri: ''
 
-  modrinth:
-    - mapify
+game_settings:
+  allow_flight: true
+  allow_nether: false
+  broadcast_console_to_ops: true
+  broadcast_rcon_to_ops: true
+  debug: false
+  difficulty: 'hard'
+  enable_command_block: true
+  enable_jmx_monitoring: false
+  enable_query: false
+  enable_rcon: false
+  enable_status: true
+  enforce_secure_profile: false
+  enforce_whitelist: true
+  entity_broadcast_range_percentage: 100
+  force_gamemode: false
+  function_permission_level: 2
+  gamemode: 'survival'
+  generate_structures: true
+  generator_settings: ''
+  hardcore: false
+  hide_online_players: true
+  initial_disabled_packs: ''
+  initial_enabled_packs: 'vanilla'
+  level_name: 'world'
+  level_seed: '4504535438041489910'
+  level_type: 'minecraft\:normal'
+  log_ips: true
+  max_chained_neighbor_updates: 1000000
+  max_players: 69
+  max_tick_time: 12000000
+  max_world_size: 29999984
+  motd: 'MineWeave Server\!'
+  network_compression_threshold: 256
+  online_mode: true
+  op_permission_level: 4
+  player_idle_timeout: 0
+  prevent_proxy_connections: false
+  pvp: true
+  'query.port': 25565
+  rate_limit: 0
+  'rcon.password': '' # TODO: Find a more secure way to store this
+  'rcon.port': 25575
+  required_resource_pack: false
+  resource_pack: ''
+  resource_pack_id: ''
+  resource_pack_prompt: ''
+  resource_pack_sha1: ''
+  server_ip: ''
+  server_port: 25565
+  simulation_distance: 6
+  spawn_animals: true
+  spawn_monsters: true
+  spawn_npcs: true
+  spawn_protection: 32
+  sync_chunk_writes: true
+  text_filtering_config: ''
+  use_native_transport: true
+  view_distance: 32
+  white_list: true

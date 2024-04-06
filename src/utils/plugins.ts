@@ -7,8 +7,7 @@ import {checkForLatestGeyser} from "../setup/03_geyser";
 import {downloadFloodgate, downloadGeyser} from "../api/geyser";
 import {canLoaderUsePlugins} from "./server";
 import {$t} from "./translations";
-
-const config = getConfig()
+import {__error, __log} from "./logging";
 
 const serverPluginsPath = "./server/plugins";
 const binPluginsPath = "./bin/plugins";
@@ -21,7 +20,7 @@ const manualPluginsPath = "./manual_plugins";
 
 export async function downloadSpigotPlugin (resource: SpigotResource): Promise<boolean> {
   if (!resource) {
-    console.error('Missing Resource! Can\'t download nothing!')
+    __error('Missing Resource! Can\'t download nothing!')
     throw Error('Missing Resource! Can\'t download nothing!')
   }
 
@@ -32,12 +31,12 @@ export async function downloadSpigotPlugin (resource: SpigotResource): Promise<b
 
     switch (site) {
       case "patreon":
-        console.error('Manual download of ' + resource.id +' required, you can download from the URL here:', resource.file.externalUrl)
-        console.error('[We\'ll pause the server launch for you so you have time to download it, to opt out of this use --no-pause]')
+        __error('Manual download of ' + resource.id +' required, you can download from the URL here:', resource.file.externalUrl)
+        __error('[We\'ll pause the server launch for you so you have time to download it, to opt out of this use --no-pause]')
 
         return false
       default:
-        console.error('Unknown external source', site)
+        __error('Unknown external source', site)
         return false
     }
   }
@@ -52,7 +51,7 @@ export async function downloadSpigotPlugin (resource: SpigotResource): Promise<b
 
 export async function downloadModrinthPlugin (resource: ModrinthProjectVersion): Promise<boolean> {
   if (!resource) {
-    console.error('Missing Resource! Can\'t download nothing!')
+    __error('Missing Resource! Can\'t download nothing!')
     throw Error('Missing Resource! Can\'t download nothing!')
   }
 
@@ -71,7 +70,7 @@ export async function checkForSpigotPlugins (plugins: SpigotResource["id"][]): P
     const resource = await getSpigotResource(resourceID)
 
     if (!resource) {
-      console.error('Missing Resource! Unable to find ' + resourceID + ' on Spigot!')
+      __error('Missing Resource! Unable to find ' + resourceID + ' on Spigot!')
       pauseAndWait = true
       break
     }
@@ -88,6 +87,7 @@ export async function checkForSpigotPlugins (plugins: SpigotResource["id"][]): P
  */
 
 export async function checkForModrinthPlugins (plugins: ModrinthProject["id"][]): Promise<boolean> {
+  const config = getConfig()
   let pauseAndWait = false
 
   for (const resourceID of plugins) {
@@ -97,7 +97,7 @@ export async function checkForModrinthPlugins (plugins: ModrinthProject["id"][])
     ])
 
     if (!resource) {
-      console.error('Missing Resource! Unable to find ' + resourceID + ' on Modrinth!')
+      __error('Missing Resource! Unable to find ' + resourceID + ' on Modrinth!')
       pauseAndWait = true
       break
     }
@@ -141,10 +141,11 @@ export async function clearCachedPlugins (): Promise<void> {
 }
 
 export async function downloadPlugins(): Promise<boolean> {
+  const config = getConfig()
   let pauseAndWaitBeforeServerStart = false
 
   if (!canLoaderUsePlugins(config.mod_loader)) {
-    console.error(
+    __error(
       $t('errors.modloaders.plugins_not_supported')
     )
 
@@ -152,14 +153,14 @@ export async function downloadPlugins(): Promise<boolean> {
   }
 
   if (!config.plugins) {
-    console.log(
+    __log(
       $t('info.no_plugins_detected')
     )
 
     return pauseAndWaitBeforeServerStart
   }
 
-  // await clearCachedPlugins()
+  await clearCachedPlugins()
 
   /**
    * Download EssentialsX and EssentialsX Assets
@@ -170,7 +171,7 @@ export async function downloadPlugins(): Promise<boolean> {
         const isEssentialsAssetEnabled = config.plugins.essentials_x.some(enabledAsset => essentialsAsset.name.startsWith(enabledAsset + '-'))
 
         if (isEssentialsAssetEnabled) {
-          console.log('Downloading essentials asset: ', essentialsAsset.name)
+          __log('Downloading essentials asset: ', essentialsAsset.name)
           await downloadEssentialsXAsset(essentialsBuild.tag_name, essentialsAsset.name)
         }
       }
@@ -181,10 +182,10 @@ export async function downloadPlugins(): Promise<boolean> {
    */
   const { latestGeyser, latestFloodgate } = await checkForLatestGeyser()
 
-  console.log('Downloading Geyser', latestGeyser.version, latestGeyser.build)
+  __log('Downloading Geyser', latestGeyser.version, latestGeyser.build)
   await downloadGeyser(latestGeyser.version, latestGeyser.build)
 
-  console.log('Downloading Floodgate', latestFloodgate.version, latestFloodgate.build)
+  __log('Downloading Floodgate', latestFloodgate.version, latestFloodgate.build)
   await downloadFloodgate(latestFloodgate.version, latestFloodgate.build)
 
   /**
@@ -208,22 +209,22 @@ export async function downloadPlugins(): Promise<boolean> {
    */
   const existingPluginFiles = fs.readdirSync(serverPluginsPath).filter(file => file.endsWith('.jar'))
   for (const file of existingPluginFiles) {
-    console.log('Removing Server Plugin Jar', file)
+    __log('Removing Server Plugin Jar', file)
     fs.rmSync(`${serverPluginsPath}/${file}`)
   }
 
   const newPluginFiles = fs.readdirSync(binPluginsPath);
   for (const file of newPluginFiles) {
-    console.log('Copying to server plugins', file);
+    __log('Copying to server plugins', file);
     try {
       fs.copyFileSync(`${binPluginsPath}/${file}`, `${serverPluginsPath}/${file}`);
     } catch (error) {
-      console.error('Error copying plugin Jar', error);
+      __error('Error copying plugin Jar', error);
     }
   }
   const manualPluginFiles = fs.readdirSync(manualPluginsPath)
   for (const file of manualPluginFiles) {
-    console.log('Copying to server manual plugins', file)
+    __log('Copying to server manual plugins', file)
     fs.copyFileSync(`${manualPluginsPath}/${file}`, `${serverPluginsPath}/${file}`, fs.constants.COPYFILE_EXCL)
   }
 

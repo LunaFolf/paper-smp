@@ -1,3 +1,5 @@
+import {__error} from "../utils/logging";
+
 function convertToUrlParams(params?: urlParams): URLSearchParams {
   const urlParams = new URLSearchParams()
 
@@ -10,17 +12,18 @@ function convertToUrlParams(params?: urlParams): URLSearchParams {
   return urlParams
 }
 
-export async function get(url: string, params?: urlParams): Promise<Response | null> {
+export async function get(url: string, params?: urlParams, headers?: object): Promise<Response | null> {
   try {
     const urlParams = convertToUrlParams(params)
 
-    const headers = {
-      'User-Agent': 'LunaFolf <luna@folf.io> discord: @lunafolf'
+    const finalHeaders = {
+      'User-Agent': 'LunaFolf <luna@folf.io> discord: @lunafolf',
+      ...headers
     }
 
     const fetchURL = url + '?' + new URLSearchParams(urlParams)
 
-    // console.debug({
+    // __debug({
     //   fetchURL,
     //   urlParams,
     //   url,
@@ -28,9 +31,36 @@ export async function get(url: string, params?: urlParams): Promise<Response | n
     //   headers
     // })
 
-    return await fetch(fetchURL, {headers})
+    return await fetch(fetchURL, {headers: finalHeaders})
   } catch (error) {
-    console.error(error)
+    __error(error)
+    return null
+  }
+}
+
+export async function post(url: string, body?: { [key: string]: string }, headers?: object): Promise<Response | null> {
+  try {
+    const finalHeaders = {
+      'User-Agent': 'LunaFolf <luna@folf.io> discord: @lunafolf',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      ...headers
+    }
+
+    const newBody = new URLSearchParams(body)
+
+    // __debug({
+    //   url,
+    //   finalHeaders,
+    //   newBody
+    // })
+
+    return await fetch(url, {
+      headers: finalHeaders,
+      method: 'POST',
+      body: newBody
+    })
+  } catch (error) {
+    __error(error)
     return null
   }
 }

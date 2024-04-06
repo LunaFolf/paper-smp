@@ -1,10 +1,15 @@
-// import {addToHistory, addWSSEventListener} from "./web_render";
 import * as colours from 'colors'
 import {textSync} from "figlet";
 import {spawn, StdioOptions} from "child_process";
+import {addToHistory, addWSSEventListener, clearHistory, setServerState} from "../web_render";
+import {getConfig, setHasConfigChanged} from "./config";
+import {$t} from "./translations";
+import {main} from "../index";
+import {__error, __log} from "./logging";
 
 const timestampRegex = /^\[\d{2}:\d{2}:\d{2} \D{4}]/is // [00:00:00 INFO]
 const titleRegex = /\[\D+?]/gi // [Essentials] [Vault] [Harbor] etc
+const doneRegex = /Done \(\d+.\d{3}s\)!/gmi // Done (4.832s)!
 
 const spawnArgs = [
   '-Xms5000M',
@@ -17,14 +22,30 @@ const spawnArgs = [
 const spawnOptions: { cwd: string, stdio: StdioOptions } = {
   cwd: './server',
   stdio: [
-    'inherit',
     'pipe',
-    'inherit'
+    'pipe',
+    'pipe'
   ]
 }
 
-export async function startServer (javaPath: string) {
-  console.log(textSync('Starting Server', "Small Slant").rainbow)
+let restartRequested = false
+
+export async function startServer (javaPath: string, startNow = false) {
+
+  if (!startNow && !getConfig().launcher_settings.auto_start) {
+    __log(
+      $t('info.auto_start_disabled')
+    )
+    setServerState('offline')
+  } else {
+    await _bootServer(javaPath)
+  }
+
+}
+
+async function _bootServer(javaPath: string) {
+  clearHistory()
+  __log(textSync('Starting Server', "Small Slant").rainbow)
 
   let javaExec = '../bin/openjre/' + javaPath + '/bin/java'
   switch (process.platform) {
@@ -33,7 +54,10 @@ export async function startServer (javaPath: string) {
       break
   }
 
+  setHasConfigChanged(false)
+
   const child = spawn(javaExec, spawnArgs, spawnOptions)
+  setServerState('booting')
 
   child.stdout?.on('data', data => {
     let messageString = data.toString()
@@ -53,33 +77,38 @@ export async function startServer (javaPath: string) {
       else if (msgObj.type === 'ERRO') msgObj.message = msgObj.message.red
 
       else if (msgObj.message.startsWith('Environment: ')) msgObj.message = msgObj.message.bgMagenta
-      else if (msgObj.message.endsWith('For help, type "help"')) {
-        console.log(textSync('Server Started!', "Small Slant").yellow)
+
+      if (doneRegex.test(message)) {
+        __log(textSync('Server Started!', "Small Slant").yellow)
+        setServerState('online')
       }
 
-      if (titleRegex.test(msgObj.message)) {
+      if (titleRegex.test(message)) {
         msgObj.message = msgObj.message.replaceAll(titleRegex, (match) => {
           return match.bgCyan.black
         })
       }
 
-      console.log(msgObj.message)
+      __log(msgObj.message)
 
-      // addToHistory({
-      //   timestamp: new Date().getTime(),
-      //   content: colours.strip(msgObj.raw),
-      //   type: msgObj.type
-      // })
+      addToHistory({
+        timestamp: new Date().getTime(),
+        content: colours.strip(msgObj.raw),
+        type: msgObj.type
+      })
     })
   })
 
   child.on('exit', (code, signal) => {
-    console.log(`Server exited with code ${code},  signal ${signal}`)
+    __log(`Server exited with code ${code},  signal ${signal}`)
+    setServerState('offline')
+
+    if (restartRequested) main(true)
   })
 
   child.on('error', (err) => {
-    console.error('Failed to start server')
-    console.error(err)
+    __error('Failed to start server')
+    __error(err)
   })
 
   child.once('spawn', () => {
@@ -87,14 +116,25 @@ export async function startServer (javaPath: string) {
       // @ts-ignore
       child.stdin.setEncoding('utf-8')
 
-      // @ts-ignore
-      // addWSSEventListener('onMessage', ({ data }) => {
-      //   const { type, content } = data
-      //
-      //   if (type === 'command') {
-      //     child.stdin.write(content + '\n')
-      //   }
-      // })
+      addWSSEventListener('onMessage', ({ data }) => {
+        if (!data) return
+        const { type, content } = data
+
+        if (type === 'command') {
+          child.stdin?.write(content + '\n')
+        }
+
+        if (type === 'action' && ['stop', 'restart'].includes(content)) {
+          if (content === 'restart') restartRequested = true
+          child.stdin?.write('stop\n')
+          setServerState('shutdown')
+        }
+
+        if (type === 'action' && content === 'force_stop') {
+          child.kill()
+          setServerState('shutdown')
+        }
+      })
     }
   })
 }

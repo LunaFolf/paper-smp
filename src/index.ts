@@ -1,27 +1,49 @@
-require('dotenv').config()
+const dotenv = require('dotenv').config()
+
+if (dotenv.error) {
+  throw dotenv.error;
+}
+
 require('colors')
 
-import fs from 'fs'
+import "./utils/config";
+import "./utils/logging";
+import "./utils/discord";
+import './web_render';
 
-import {waitForKey} from "./utils/input"
+import {setupServer} from "./setup/00_initialisation";
+import {writeFileSync} from 'fs'
 import {downloadPlugins} from "./utils/plugins";
 import {downloadMods} from "./utils/mods";
-import {setupServer} from "./setup/00_initialisation";
 import {startServer} from "./utils/process";
 
-setupServer()
-  .then(async javaPath => {
-    let waitBeforeStart = false
+import {addWSSEventListener, setServerState, startHTTPServer} from "./web_render";
+import {getConfig} from "./utils/config";
 
-    waitBeforeStart = await downloadPlugins()
-    waitBeforeStart = await downloadMods()
+addWSSEventListener('onMessage', ({ data, ws }) => {
+  if (!data) return
 
-    if (waitBeforeStart) {
-      console.log('[PAUSED] press ENTER to continue...')
-      await waitForKey()
-    }
+  if (data.type === 'action' && data.content === 'start') {
+    main(true)
+  }
+})
 
-    fs.writeFileSync('./server/eula.txt','#suck it\n#microsoft\neula=true') // Is this legal??
+const webPort = getConfig().launcher_settings.web_port || 4321
 
-    await startServer(javaPath)
-  })
+startHTTPServer(webPort)
+
+export function main(startNow = false) {
+  setServerState('updating')
+
+  setupServer()
+    .then(async javaPath => {
+      await downloadPlugins()
+      await downloadMods()
+
+      writeFileSync('./server/eula.txt','#suck it\n#microsoft\neula=true') // Is this legal??
+
+      await startServer(javaPath, startNow)
+    })
+}
+
+main()

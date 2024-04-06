@@ -1,13 +1,14 @@
 import {get} from "./http";
 import {createWriteStream} from "fs";
 import {writeToFile} from "../utils/filesystem";
+import {__error} from "../utils/logging";
 
 export async function getModrinthProjectCompatibleVersion (
   projectID: string,
   loaders?: ModrinthProjectVersion["loaders"],
   game_versions?: ModrinthProjectVersion["game_versions"],
 ): Promise<ModrinthProjectVersion | null> {
-  // console.debug({
+  // __debug({
   //   projectID,
   //   loaders,
   //   game_versions
@@ -22,7 +23,7 @@ export async function getModrinthProjectCompatibleVersion (
       const data = await response.json();
 
       if (data.error) {
-        console.error('Error getting modrinth project', data)
+        __error('Error getting modrinth project', data)
         return null
       }
 
@@ -31,7 +32,7 @@ export async function getModrinthProjectCompatibleVersion (
 
     return null
   } catch (error) {
-    console.error(error)
+    __error(error)
     return null
   }
 }
@@ -41,13 +42,13 @@ export async function downloadModrinthProject (resource: ModrinthProjectVersion,
     const firstFile = resource.files[0]
 
     if (!firstFile) {
-      console.error('No files available! can\'t download nothing!')
+      __error('No files available! can\'t download nothing!')
       return false
     }
 
     const response = await get(firstFile.url)
     if (!response || !response.body) {
-      console.error(response)
+      __error(response)
       return false
     }
 
@@ -56,11 +57,9 @@ export async function downloadModrinthProject (resource: ModrinthProjectVersion,
 
     await writeToFile(reader, stream);
 
-    console.log('Done')
-
     return true
   } catch (error) {
-    console.error('An error occurred: ', error);
+    __error('An error occurred: ', error);
 
     return false
   }

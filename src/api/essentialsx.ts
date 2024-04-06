@@ -1,6 +1,7 @@
 import {get} from './http'
 import {createWriteStream} from "fs"
 import {writeToFile} from "../utils/filesystem"
+import {__error} from "../utils/logging";
 
 export async function getReleases (): Promise<EssentialsXBuild[] | null> {
   const response = await get('https://api.github.com/repos/EssentialsX/Essentials/releases')
@@ -13,7 +14,7 @@ export async function downloadEssentialsXAsset (tagName: string, assetName: stri
   try {
     const response = await get(`https://github.com/EssentialsX/Essentials/releases/download/${tagName}/${assetName}`);
     if (!response || !response.body) {
-      console.error(response)
+      __error(response)
       throw new Error('Something aint right, chief')
     }
     const reader = response.body.getReader();
@@ -25,7 +26,7 @@ export async function downloadEssentialsXAsset (tagName: string, assetName: stri
     await writeToFile(reader, stream);
 
   } catch (error) {
-    console.error('An error occurred: ', error);
+    __error('An error occurred: ', error);
   }
   return null;
 }

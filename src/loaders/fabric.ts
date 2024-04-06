@@ -3,11 +3,11 @@ import {getConfig} from "../utils/config";
 import {downloadFabricServerJar, getFabricInstallers, getFabricLoaders} from "../api/fabric";
 import {checkBinForServerJar} from "../setup/02_mcloader";
 import {$t} from "../utils/translations";
-import {copyServerJar} from "../utils/filesystem";
-
-const config = getConfig()
+import {copyServerJar, createManifest} from "../utils/filesystem";
+import {__log} from "../utils/logging";
 
 export async function setupFabricServerJar(): Promise<void> {
+  const config = getConfig()
   const loaders = await getFabricLoaders(config.minecraft_version)
   if (!loaders || !loaders.length) throw new Error(
     $t('errors.no_builds.fabric', { version: config.minecraft_version })
@@ -36,8 +36,8 @@ export async function setupFabricServerJar(): Promise<void> {
 
   const alreadyHaveValidBuild = checkBinForServerJar(assumedFileName)
 
-  console.log('Latest fabric version:', assumedFileName)
-  console.log('Needs downloading:', !alreadyHaveValidBuild)
+  __log('Latest fabric version:', assumedFileName)
+  __log('Needs downloading:', !alreadyHaveValidBuild)
 
   if (!alreadyHaveValidBuild) {
     await downloadFabricServerJar(
@@ -45,8 +45,26 @@ export async function setupFabricServerJar(): Promise<void> {
       latestLoader.loader.version,
       latestInstaller.version
     )
-    console.log('Downloaded latest fabric version')
+    __log('Downloaded latest fabric version')
   }
 
   await copyServerJar(`./bin/loaders/${assumedFileName}`, './server/server.jar')
+
+  await createManifest({
+    minecraft: {
+      version: config.minecraft_version,
+      modLoaders: [
+        {
+          id: `fabric-${latestLoader.loader.version}`,
+          primary: true
+        }
+      ]
+    },
+    manifestType: "minecraftModpack",
+    manifestVersion: 1,
+    name: "MineWeave",
+    author: "Your mom",
+    files: [],
+    overrides: "overrides"
+  })
 }

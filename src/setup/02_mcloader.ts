@@ -3,8 +3,7 @@ import crypto from "crypto";
 import {getConfig} from "../utils/config";
 import {setupPaperServerJar} from "../loaders/paper";
 import {setupFabricServerJar} from "../loaders/fabric";
-
-const config = getConfig()
+import {__error} from "../utils/logging";
 
 export function checkBinForServerJar (jarFileName: string, checksum?: string) {
   const filePath = `./bin/loaders/${jarFileName}`
@@ -24,7 +23,7 @@ export function checkBinForServerJar (jarFileName: string, checksum?: string) {
 }
 
 export async function setupServerJar (): Promise<void> {
-  const loader = config.mod_loader
+  const loader = getConfig().mod_loader
 
   let javaPath = ''
 
@@ -36,7 +35,7 @@ export async function setupServerJar (): Promise<void> {
       await setupFabricServerJar()
       break
     default:
-      console.error(`'${loader}' is not currently supported for mod_loader option`)
+      __error(`'${loader}' is not currently supported for mod_loader option`)
       process.exit(1)
   }
 }

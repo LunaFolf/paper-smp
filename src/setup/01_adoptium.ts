@@ -1,6 +1,7 @@
 import fs from "fs";
 import {downloadJRE, getAssets} from "../api/adoptium";
 import decompress from "decompress";
+import {__error} from "../utils/logging";
 
 export async function checkForOpenJRE(): Promise<string | void> {
   const _arch = process.arch
@@ -16,7 +17,7 @@ export async function checkForOpenJRE(): Promise<string | void> {
     case "mipsel":
     case "ppc":
     case "s390":
-      console.error(_arch, 'architecture is not supported by AdoptOpenJDK')
+      __error(_arch, 'architecture is not supported by AdoptOpenJDK')
       return
     default:
       arch = _arch
@@ -35,7 +36,7 @@ export async function checkForOpenJRE(): Promise<string | void> {
     case "sunos":
     case "cygwin":
     case "netbsd":
-      console.error(_platform, 'platform is not supported by AdoptOpenJDK')
+      __error(_platform, 'platform is not supported by AdoptOpenJDK')
       return
     default:
       platform = _platform
@@ -45,7 +46,7 @@ export async function checkForOpenJRE(): Promise<string | void> {
   const jreAsset = await getAssets(arch, platform)
 
   if (!jreAsset) {
-    console.error('Unable to find available JRE for', platform, arch)
+    __error('Unable to find available JRE for', platform, arch)
     return
   }
 

@@ -1,6 +1,7 @@
 import {get} from './http'
 import {createWriteStream} from "fs"
 import {writeToFile} from "../utils/filesystem"
+import {__error, __log} from "../utils/logging";
 
 export async function getSpigotResource (resourceID: number): Promise<SpigotResource | null> {
   const response = await get('https://api.spiget.org/v2/resources/' + resourceID)
@@ -12,11 +13,11 @@ export async function getSpigotResource (resourceID: number): Promise<SpigotReso
 export async function downloadSpigotResource (resource: SpigotResource): Promise<boolean> {
   try {
     const fileName = resource.file.url.split('/')[1].split('.')[0] +'.jar'
-    console.log('Downloading', resource.id, `(${fileName})`)
+    __log('Downloading', resource.id, `(${fileName})`)
 
     const response = await get('https://api.spiget.org/v2/resources/' + resource.id + '/download');
     if (!response || !response.body) {
-      console.error(response)
+      __error(response)
       throw new Error('Something aint right, chief')
     }
     const reader = response.body.getReader();
@@ -24,12 +25,10 @@ export async function downloadSpigotResource (resource: SpigotResource): Promise
 
     await writeToFile(reader, stream);
 
-    console.log('Done')
-
     return true
 
   } catch (error) {
-    console.error('An error occurred: ', error);
+    __error('An error occurred: ', error);
 
     return false
   }

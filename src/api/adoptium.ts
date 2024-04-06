@@ -1,6 +1,7 @@
 import {get} from "./http";
 import {createWriteStream} from "fs";
 import {writeToFile} from "../utils/filesystem";
+import {__error, __log} from "../utils/logging";
 
 export async function getAssets (arch: adoptArch, os: adoptOS, image: adoptImage = 'jre'): Promise<adoptBinaryAssetView | null> {
   const url = 'https://api.adoptium.net/v3/assets/latest/21/hotspot'
@@ -20,10 +21,10 @@ export async function getAssets (arch: adoptArch, os: adoptOS, image: adoptImage
 
 export async function downloadJRE (downloadURL: string, packageName: string) {
   try {
-    console.log('Downloading', packageName)
+    __log('Downloading', packageName)
     const response = await get(downloadURL)
     if (!response || !response.body) {
-      console.error(response)
+      __error(response)
       throw new Error('Something aint right, chief')
     }
     const reader = response.body.getReader();
@@ -32,9 +33,7 @@ export async function downloadJRE (downloadURL: string, packageName: string) {
 
     await writeToFile(reader, stream);
 
-    console.log('Done')
-
   } catch (error) {
-    console.error('An error occurred: ', error);
+    __error('An error occurred: ', error);
   }
 }

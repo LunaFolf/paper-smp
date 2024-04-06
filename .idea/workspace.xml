@@ -5,11 +5,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="45dc901f-6ded-43ea-be88-d6e79c48953b" name="Changes" comment="Improve mod downloading and syncing process&#10;&#10;This update improves the mod downloading and syncing process by removing existing server mods, copying new ones and manually added ones. It ensures the deletion of old mods andl adds or updates mod files to the server directory as necessary. Furthermore, it also includes dependency checking for each downloaded mod and provides informative logging during the mod downloading process.">
+      <change afterPath="$PROJECT_DIR$/fullbuild.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/discord.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/discord.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/logging.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/paper-smp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/paper-smp.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/pkg-config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/adoptium.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/adoptium.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/essentialsx.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/essentialsx.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/fabric.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/fabric.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/geyser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/geyser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/http.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/http.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/modrinth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/modrinth.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/papermc.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/papermc.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/spigot.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/spigot.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/loaders/fabric.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/loaders/fabric.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/loaders/paper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/loaders/paper.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/setup/00_initialisation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/setup/00_initialisation.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/setup/01_adoptium.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/setup/01_adoptium.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/setup/02_mcloader.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/setup/02_mcloader.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/setup/defaultServerConfig.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/setup/defaultServerConfig.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types/modrinth.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/modrinth.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/server.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/server.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/filesystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/filesystem.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/mods.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/mods.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/plugins.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/plugins.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/process.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/process.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/translations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/translations.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/web_render.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/web_render.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +65,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;//wsl.localhost/Ubuntu-22.04/home/luna/projects/paper-smp-web&quot;,
+    &quot;last_opened_file_path&quot;: &quot;//wsl.localhost/Ubuntu-22.04/home/luna/projects/paper-smp-web/src/assets/icon&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -43,7 +74,7 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;npm.build-only.executor&quot;: &quot;Run&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.typescriptcompiler&quot;,
     &quot;ts.external.directory.path&quot;: &quot;\\\\wsl.localhost\\Ubuntu-22.04\\home\\luna\\projects\\paper-smp\\node_modules\\typescript\\lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -52,6 +83,18 @@
     <option name="descriptions">
       <ReportDescription localRun="true" path="C:\Users\LiamH\AppData\Local\Temp\qodana_output\qodana.sarif.json" reportGuid="3051fb5b-bfa6-470e-8c7d-a53de7bb3756" reportId="paper-smp/qodana/2024-03-30" />
     </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="\\wsl.localhost\Ubuntu-22.04\home\luna\projects\paper-smp-web\src\assets\icon" />
+      <recent name="\\wsl.localhost\Ubuntu-22.04\home\luna\projects\paper-smp-web\src\types" />
+      <recent name="\\wsl.localhost\Ubuntu-22.04\home\luna\projects\paper-smp-web\src\views" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="\\wsl.localhost\Ubuntu-22.04\home\luna\projects\paper-smp\src" />
+      <recent name="\\wsl.localhost\Ubuntu-22.04\home\luna\projects\paper-smp\src\utils" />
+      <recent name="\\wsl.localhost\Ubuntu-22.04\home\luna\projects\paper-smp-web" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="build-only" type="js.build_tools.npm" nameIsGenerated="true">
@@ -90,7 +133,22 @@
       <workItem from="1711909883739" duration="22000" />
       <workItem from="1711912359870" duration="119000" />
       <workItem from="1711912646420" duration="116000" />
-      <workItem from="1711913061013" duration="24308000" />
+      <workItem from="1711913061013" duration="25051000" />
+      <workItem from="1712092898983" duration="2290000" />
+      <workItem from="1712097541231" duration="5311000" />
+      <workItem from="1712104485643" duration="15430000" />
+      <workItem from="1712185809705" duration="20091000" />
+      <workItem from="1712229579589" duration="8263000" />
+      <workItem from="1712240434866" duration="1112000" />
+      <workItem from="1712264099549" duration="372000" />
+      <workItem from="1712264513177" duration="8733000" />
+      <workItem from="1712275203608" duration="879000" />
+      <workItem from="1712282871113" duration="96000" />
+      <workItem from="1712282980035" duration="150000" />
+      <workItem from="1712283143096" duration="10890000" />
+      <workItem from="1712302868547" duration="8000" />
+      <workItem from="1712344856035" duration="18090000" />
+      <workItem from="1712404977889" duration="1844000" />
     </task>
     <task id="LOCAL-00001" summary="Temporarily disable websocket and http stuff, to prevent issues.">
       <option name="closed" value="true" />
@@ -132,7 +190,15 @@
       <option name="project" value="LOCAL" />
       <updated>1711942112909</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Improve mod downloading and syncing process&#10;&#10;This update improves the mod downloading and syncing process by removing existing server mods, copying new ones and manually added ones. It ensures the deletion of old mods andl adds or updates mod files to the server directory as necessary. Furthermore, it also includes dependency checking for each downloaded mod and provides informative logging during the mod downloading process.">
+      <option name="closed" value="true" />
+      <created>1711944899654</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1711944899654</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -7,11 +7,13 @@ i18next.init({
     en: {
       translation: {
         info: {
+          auto_start_disabled: "Server auto-start is disabled. You can start the server via the web panel.",
           no_plugins_detected: "No plugins detected in server config... if you expected some, check you wrote it correctly.",
           no_mods_detected: "No mods detected in server config... if you expected some, check you wrote it correctly.",
           downloading: {
             mod: "Download mod: {{ modName }}"
-          }
+          },
+          auto_creating_config: "No server-config.yml found, creating one for you."
         },
         errors: {
           modloaders: {

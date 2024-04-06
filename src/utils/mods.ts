@@ -18,30 +18,32 @@ export async function clearCachedMods (): Promise<void> {
   })
 }
 
-export async function downloadMods(): Promise<boolean> {
+export async function checkIfModDownloaded(fileName: string): Promise<boolean> {
+  return fs.existsSync('./bin/mods/' + fileName)
+}
+
+export async function downloadMods(): Promise<void> {
   const config = getConfig();
-  let pauseAndWaitBeforeServerStart = false
 
   if (!canLoaderUseMods(config.mod_loader)) {
     __error(
       $t('errors.modloaders.mods_not_supported')
     )
-
-    return pauseAndWaitBeforeServerStart
+    return
   }
 
   if (!config.mods || !config.mods.modrinth) {
     __log(
       $t('info.no_mods_detected')
     )
-
-    return pauseAndWaitBeforeServerStart
+    return
   }
 
-  await clearCachedMods()
+  const modsToCopy: string[] = []
 
-  await checkForModrinthMods(config.mods.modrinth)
-    .then(pauseAndWait => pauseAndWaitBeforeServerStart = pauseAndWait)
+  await checkForModrinthMods(config.mods.modrinth).then(mods => {
+    modsToCopy.push(...mods)
+  })
 
   /**
    * Remove existing server mods, copy new ones and also copy manual ones.
@@ -52,8 +54,7 @@ export async function downloadMods(): Promise<boolean> {
     fs.rmSync(`${serverModsPath}/${file}`)
   }
 
-  const newModFiles = fs.readdirSync(binModsPath);
-  for (const file of newModFiles) {
+  for (const file of modsToCopy) {
     __log('Copying to server mods', file);
     try {
       fs.copyFileSync(`${binModsPath}/${file}`, `${serverModsPath}/${file}`);
@@ -61,23 +62,23 @@ export async function downloadMods(): Promise<boolean> {
       __error('Error copying mod Jar', error);
     }
   }
+
   const manualModFiles = fs.readdirSync(manualModsPath)
   for (const file of manualModFiles) {
     __log('Copying to server manual mods', file)
     fs.copyFileSync(`${manualModsPath}/${file}`, `${serverModsPath}/${file}`, fs.constants.COPYFILE_EXCL)
   }
 
-  createImportableZIP([
-    ...newModFiles.map(f => `${binModsPath}/${f}`),
+  await createImportableZIP([
+    ...modsToCopy.map(f => `${binModsPath}/${f}`),
     ...manualModFiles.map(f => `${manualModsPath}/${f}`)
   ], 'modExport.zip')
-
-  return pauseAndWaitBeforeServerStart
 }
 
-export async function checkForModrinthMods(mods: ModrinthProject["id"][]): Promise<boolean> {
+export async function checkForModrinthMods(mods: ModrinthProject["id"][]): Promise<string[]> {
   const config = getConfig();
-  let pauseAndWait = false
+
+  const modNames: string[] = []
 
   for (const resourceID of mods) {
     const resource = await getModrinthProjectCompatibleVersion(
@@ -90,29 +91,27 @@ export async function checkForModrinthMods(mods: ModrinthProject["id"][]): Promi
       __error(
         $t('errors.modloaders.modrinth.unable_to_find', { resourceID })
       )
-      pauseAndWait = true
       break
     }
 
     __log(
-      $t('info.downloading.mod', { modName: resource.name })
+      $t('info.checking.mod', { modName: resource.name })
     )
 
-    const success = await downloadModrinthMod(resource)
-    pauseAndWait = !success
-
+    modNames.push(...(await downloadModrinthMod(resource)))
   }
 
-  return pauseAndWait
+  return modNames
 }
 
-export async function downloadModrinthMod (resource: ModrinthProjectVersion): Promise<boolean> {
-  let pauseAndWait = false
+export async function downloadModrinthMod (resource: ModrinthProjectVersion): Promise<string[]> {
   if (!resource) {
     __error(
       $t('errors.modloaders.modrinth.missing_resource')
     )
   }
+
+  const modNames: string[] = []
 
   for (const dependency of resource.dependencies) {
     const config = getConfig()
@@ -127,20 +126,24 @@ export async function downloadModrinthMod (resource: ModrinthProjectVersion): Pr
         __error(
           $t('errors.modloaders.modrinth.unable_to_find', { resourceID: resource.project_id })
         )
-        pauseAndWait = true
         break
       }
 
-      __log(
-        $t('info.downloading.mod', { modName: dependencyResource.name })
-      )
-
-      const dependencySuccess = await downloadModrinthMod(dependencyResource)
-      pauseAndWait = !dependencySuccess || pauseAndWait
+      modNames.push(...(await downloadModrinthMod(dependencyResource)))
     }
   }
 
-  pauseAndWait = await downloadModrinthProject(resource, 'mod') || pauseAndWait
+  const alreadyDownloaded = await checkIfModDownloaded(resource.files[0].filename)
 
-  return pauseAndWait
+  if (alreadyDownloaded) return []
+
+  __log(
+    $t('info.downloading.mod', { modName: resource.name })
+  )
+
+  modNames.push(resource.files[0].filename)
+
+  await downloadModrinthProject(resource, 'mod')
+
+  return modNames
 }

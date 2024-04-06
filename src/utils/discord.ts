@@ -8,10 +8,7 @@ addWSSEventListener('onMessage', async (callback) => {
   const { type, content } = callback.data
 
   if (type === 'discordAuth' && callback.ws) {
-    __debug('Auth attempt', content)
     const auth = await postOAuth(content)
-
-    __debug('Result', auth)
 
     if (auth.access_token) {
       const user = await getUser(auth.access_token)
@@ -23,16 +20,12 @@ addWSSEventListener('onMessage', async (callback) => {
       const authRecord: AuthRecord = {
         expiry: new Date().getTime() + auth.expires_in,
         auth_token: auth.access_token,
+        refresh_token: auth.refresh_token,
         user,
         ws_client: callback.ws
       }
 
       addAuthUser(authRecord);
-
-      callback.ws?.send(JSON.stringify({
-        type: 'updateAuth',
-        data: authRecord
-      }))
     }
   }
 })

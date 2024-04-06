@@ -96,6 +96,7 @@ type serverConfig = {
 type AuthRecord = {
   expiry: number,
   auth_token: string,
+  refresh_token: string,
   user: object,
   ws_client: any
 }

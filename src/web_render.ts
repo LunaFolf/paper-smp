@@ -3,7 +3,8 @@ import * as ws from 'ws'
 import path from 'node:path';
 import fs from 'fs';
 import {getConfig, getHasConfigChanged} from "./utils/config";
-import {__error} from "./utils/logging";
+import {__debug, __error} from "./utils/logging";
+import {refreshToken as apiRefreshToken} from "./api/discord";
 
 const authedUsers: AuthRecord[] = []
 
@@ -29,11 +30,20 @@ const eventListeners: { eventType: eventType, callbackFn: eventCallbackFn }[] = 
 let serverState: ServerState = 'offline'
 let history: HistoryItem[] = []
 
-export function updateAuthUserClient(token: string, client: ws.WebSocket) {
+export async function updateAuthUserClient(token: string, client: ws.WebSocket) {
   const record = authedUsers.find(r => r.auth_token === token)
   if (!record) return
 
   record.ws_client = client
+
+  const data = await apiRefreshToken(record.refresh_token)
+
+  record.expiry = new Date().getTime() + data.expires_in
+  record.auth_token = data.access_token
+  record.refresh_token = data.refresh_token
+  record.user = data.user
+
+  sendToClient(record.ws_client, 'updateAuth', record)
 }
 
 export function isTokenAllowed(auth_token: string): boolean {
@@ -48,6 +58,9 @@ export function getAuthedUsers(): AuthRecord[] {
 
 export function addAuthUser(authRecord: AuthRecord): void {
   authedUsers.push(authRecord)
+
+  sendToClient(authRecord.ws_client, 'updateAuth', authRecord)
+  sendEverythingToClient(authRecord.ws_client)
 }
 
 export function setServerState(state: ServerState) {
@@ -71,6 +84,13 @@ export function broadcastEverything() {
   broadcast('serverConfig', getConfig())
 }
 
+export function sendEverythingToClient(client: ws.WebSocket) {
+  sendToClient(client, 'updateHistory', history.slice(-100))
+  sendToClient(client, 'serverState', serverState)
+  sendToClient(client, 'hasConfigChanged', getHasConfigChanged())
+  sendToClient(client, 'serverConfig', getConfig())
+}
+
 export function sendToClient(client: ws.WebSocket, type: string, data: any) {
   client.send(JSON.stringify({ type, data }))
 }
@@ -79,12 +99,7 @@ addWSSEventListener('onMessage', (callback) => {
   if (callback.ws && callback.data) {
     const { type } = callback.data
 
-    if (type === 'requestEverything') {
-      sendToClient(callback.ws, 'updateHistory', history.slice(-100))
-      sendToClient(callback.ws, 'serverState', serverState)
-      sendToClient(callback.ws, 'hasConfigChanged', getHasConfigChanged())
-      sendToClient(callback.ws, 'serverConfig', getConfig())
-    }
+    if (type === 'requestEverything') sendEverythingToClient(callback.ws)
   }
 })
 

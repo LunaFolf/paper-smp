@@ -4,43 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="45dc901f-6ded-43ea-be88-d6e79c48953b" name="Changes" comment="Improve mod downloading and syncing process&#10;&#10;This update improves the mod downloading and syncing process by removing existing server mods, copying new ones and manually added ones. It ensures the deletion of old mods andl adds or updates mod files to the server directory as necessary. Furthermore, it also includes dependency checking for each downloaded mod and provides informative logging during the mod downloading process.">
-      <change afterPath="$PROJECT_DIR$/fullbuild.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/discord.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/discord.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/logging.ts" afterDir="false" />
+    <list default="true" id="45dc901f-6ded-43ea-be88-d6e79c48953b" name="Changes" comment="Update packages dependencies&#10;&#10;Several packages were updated, added, or removed. Notably, the `luxon` package was updated to version 3.4.4, and `archiver` was added. The `@babel/helper-string-parser` and `@babel/runtime` packages were also updated among others for overall enhancement of the project.">
       <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/paper-smp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/paper-smp.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/pkg-config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/adoptium.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/adoptium.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/essentialsx.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/essentialsx.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/fabric.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/fabric.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/geyser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/geyser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/http.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/http.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/discord.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/discord.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/modrinth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/modrinth.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/papermc.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/papermc.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/spigot.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/spigot.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/loaders/fabric.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/loaders/fabric.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/loaders/paper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/loaders/paper.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/setup/00_initialisation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/setup/00_initialisation.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/setup/01_adoptium.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/setup/01_adoptium.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/setup/02_mcloader.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/setup/02_mcloader.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/setup/defaultServerConfig.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/setup/defaultServerConfig.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/modrinth.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/modrinth.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types/server.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/server.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/filesystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/filesystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/discord.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/discord.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/mods.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/mods.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/plugins.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/plugins.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/process.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/process.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/translations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/translations.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/web_render.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/web_render.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,7 +123,7 @@
       <workItem from="1712283143096" duration="10890000" />
       <workItem from="1712302868547" duration="8000" />
       <workItem from="1712344856035" duration="18090000" />
-      <workItem from="1712404977889" duration="1844000" />
+      <workItem from="1712404977889" duration="8189000" />
     </task>
     <task id="LOCAL-00001" summary="Temporarily disable websocket and http stuff, to prevent issues.">
       <option name="closed" value="true" />
@@ -198,7 +173,15 @@
       <option name="project" value="LOCAL" />
       <updated>1711944899654</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Update packages dependencies&#10;&#10;Several packages were updated, added, or removed. Notably, the `luxon` package was updated to version 3.4.4, and `archiver` was added. The `@babel/helper-string-parser` and `@babel/runtime` packages were also updated among others for overall enhancement of the project.">
+      <option name="closed" value="true" />
+      <created>1712412725441</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1712412725441</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -223,6 +206,7 @@
     <MESSAGE value="Clear cached plugins before download&#10;&#10;This commit removes the clearCachedPlugins function from the initialisation file and calls it in the downloadPlugins function. The purpose is to ensure that old cached plugins are cleared before new ones are downloaded." />
     <MESSAGE value="latest (none functional)" />
     <MESSAGE value="Improve mod downloading and syncing process&#10;&#10;This update improves the mod downloading and syncing process by removing existing server mods, copying new ones and manually added ones. It ensures the deletion of old mods andl adds or updates mod files to the server directory as necessary. Furthermore, it also includes dependency checking for each downloaded mod and provides informative logging during the mod downloading process." />
-    <option name="LAST_COMMIT_MESSAGE" value="Improve mod downloading and syncing process&#10;&#10;This update improves the mod downloading and syncing process by removing existing server mods, copying new ones and manually added ones. It ensures the deletion of old mods andl adds or updates mod files to the server directory as necessary. Furthermore, it also includes dependency checking for each downloaded mod and provides informative logging during the mod downloading process." />
+    <MESSAGE value="Update packages dependencies&#10;&#10;Several packages were updated, added, or removed. Notably, the `luxon` package was updated to version 3.4.4, and `archiver` was added. The `@babel/helper-string-parser` and `@babel/runtime` packages were also updated among others for overall enhancement of the project." />
+    <option name="LAST_COMMIT_MESSAGE" value="Update packages dependencies&#10;&#10;Several packages were updated, added, or removed. Notably, the `luxon` package was updated to version 3.4.4, and `archiver` was added. The `@babel/helper-string-parser` and `@babel/runtime` packages were also updated among others for overall enhancement of the project." />
   </component>
 </project>

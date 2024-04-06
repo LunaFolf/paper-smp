@@ -140,6 +140,10 @@ export async function clearCachedPlugins (): Promise<void> {
   })
 }
 
+export async function checkIfPluginDownloaded(fileName: string): Promise<boolean> {
+  return fs.existsSync('./bin/plugins/' + fileName)
+}
+
 export async function downloadPlugins(): Promise<boolean> {
   const config = getConfig()
   let pauseAndWaitBeforeServerStart = false

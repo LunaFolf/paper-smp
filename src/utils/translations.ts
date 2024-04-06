@@ -10,6 +10,9 @@ i18next.init({
           auto_start_disabled: "Server auto-start is disabled. You can start the server via the web panel.",
           no_plugins_detected: "No plugins detected in server config... if you expected some, check you wrote it correctly.",
           no_mods_detected: "No mods detected in server config... if you expected some, check you wrote it correctly.",
+          checking: {
+            mod: "Checking mod: {{ modName }}"
+          },
           downloading: {
             mod: "Download mod: {{ modName }}"
           },

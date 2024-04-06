@@ -3,6 +3,8 @@ import {createWriteStream} from "fs";
 import {writeToFile} from "../utils/filesystem";
 import {__error} from "../utils/logging";
 
+const projectVersionCache: { [key: ModrinthProjectVersion["project_id"]]: ModrinthProjectVersion }= {}
+
 export async function getModrinthProjectCompatibleVersion (
   projectID: string,
   loaders?: ModrinthProjectVersion["loaders"],
@@ -13,6 +15,9 @@ export async function getModrinthProjectCompatibleVersion (
   //   loaders,
   //   game_versions
   // })
+
+  if (projectVersionCache[projectID]) return projectVersionCache[projectID];
+
   try {
     const response = await get(`https://api.modrinth.com/v2/project/${projectID}/version`, {
       loaders: JSON.stringify(loaders || []),
@@ -26,6 +31,8 @@ export async function getModrinthProjectCompatibleVersion (
         __error('Error getting modrinth project', data)
         return null
       }
+
+      projectVersionCache[projectID] = data[0]
 
       return data[0]
     }

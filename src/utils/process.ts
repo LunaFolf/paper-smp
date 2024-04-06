@@ -109,6 +109,8 @@ async function _bootServer(javaPath: string) {
   child.on('error', (err) => {
     __error('Failed to start server')
     __error(err)
+
+    setServerState('offline')
   })
 
   child.once('spawn', () => {

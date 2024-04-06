@@ -5,3 +5,4 @@ dist/
 *.exe
 paper-smp-linux
 builds/
+*.env

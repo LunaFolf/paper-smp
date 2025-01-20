@@ -4,23 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="45dc901f-6ded-43ea-be88-d6e79c48953b" name="Changes" comment="Implement Discord refresh token support&#10;&#10;The code has been updated to support refresh tokens from Discord. Additionally, there's also an optimized check for already downloaded Modrinth mods which should improve the efficiency of mod checking. A few minor logged messages during mod download process have also been adjusted for clarity.">
-      <change afterPath="$PROJECT_DIR$/src/types/paper.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/loaders.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/papermc.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/testutils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/paper-smp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/paper-smp.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="45dc901f-6ded-43ea-be88-d6e79c48953b" name="Changes" comment="SHIT">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/pkg-config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server-config.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/papermc.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/papermc.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/setup/00_initialisation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/setup/00_initialisation.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bun.lockb" beforeDir="false" afterPath="$PROJECT_DIR$/bun.lockb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,7 +142,7 @@
       <workItem from="1731685597349" duration="918000" />
       <workItem from="1731694935290" duration="1921000" />
       <workItem from="1731819806002" duration="48000" />
-      <workItem from="1737339225546" duration="1229000" />
+      <workItem from="1737339225546" duration="1881000" />
     </task>
     <task id="LOCAL-00001" summary="Temporarily disable websocket and http stuff, to prevent issues.">
       <option name="closed" value="true" />
@@ -222,7 +208,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712426870169</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="SHIT">
+      <option name="closed" value="true" />
+      <created>1737340765249</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1737340765249</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -249,6 +243,7 @@
     <MESSAGE value="Improve mod downloading and syncing process&#10;&#10;This update improves the mod downloading and syncing process by removing existing server mods, copying new ones and manually added ones. It ensures the deletion of old mods andl adds or updates mod files to the server directory as necessary. Furthermore, it also includes dependency checking for each downloaded mod and provides informative logging during the mod downloading process." />
     <MESSAGE value="Update packages dependencies&#10;&#10;Several packages were updated, added, or removed. Notably, the `luxon` package was updated to version 3.4.4, and `archiver` was added. The `@babel/helper-string-parser` and `@babel/runtime` packages were also updated among others for overall enhancement of the project." />
     <MESSAGE value="Implement Discord refresh token support&#10;&#10;The code has been updated to support refresh tokens from Discord. Additionally, there's also an optimized check for already downloaded Modrinth mods which should improve the efficiency of mod checking. A few minor logged messages during mod download process have also been adjusted for clarity." />
-    <option name="LAST_COMMIT_MESSAGE" value="Implement Discord refresh token support&#10;&#10;The code has been updated to support refresh tokens from Discord. Additionally, there's also an optimized check for already downloaded Modrinth mods which should improve the efficiency of mod checking. A few minor logged messages during mod download process have also been adjusted for clarity." />
+    <MESSAGE value="SHIT" />
+    <option name="LAST_COMMIT_MESSAGE" value="SHIT" />
   </component>
 </project>

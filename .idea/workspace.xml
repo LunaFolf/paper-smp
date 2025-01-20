@@ -5,8 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="45dc901f-6ded-43ea-be88-d6e79c48953b" name="Changes" comment="Implement Discord refresh token support&#10;&#10;The code has been updated to support refresh tokens from Discord. Additionally, there's also an optimized check for already downloaded Modrinth mods which should improve the efficiency of mod checking. A few minor logged messages during mod download process have also been adjusted for clarity.">
+      <change afterPath="$PROJECT_DIR$/src/types/paper.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/loaders.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/papermc.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/testutils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/paper-smp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/paper-smp.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/mods.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/mods.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/pkg-config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server-config.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/papermc.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/papermc.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/setup/00_initialisation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/setup/00_initialisation.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +45,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;//wsl.localhost/Ubuntu-22.04/home/luna/projects/paper-smp-web/src/assets/icon&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/lunaf/Documents/git projects/ModrinthBestVersion&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -40,8 +54,9 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;npm.build-only.executor&quot;: &quot;Run&quot;,
+    &quot;npm.serve.executor&quot;: &quot;Run&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;settings.typescriptcompiler&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;\\\\wsl.localhost\\Ubuntu-22.04\\home\\luna\\projects\\paper-smp\\node_modules\\typescript\\lib&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\lunaf\\Documents\\git projects\\MineWeave_Web\\node_modules\\typescript\\lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -62,22 +77,36 @@
       <recent name="\\wsl.localhost\Ubuntu-22.04\home\luna\projects\paper-smp-web" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="npm.serve">
     <configuration name="build-only" type="js.build_tools.npm" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/../paper-smp-web/package.json" />
+      <package-json value="$PROJECT_DIR$/../MineWeave_Web/package.json" />
       <command value="run" />
       <scripts>
         <script value="build-only" />
       </scripts>
-      <node-interpreter value="wsl://Ubuntu-22.04@/home/luna/.nvm/versions/node/v20.11.1/bin/node" />
+      <node-interpreter value="node" />
       <envs />
       <method v="2" />
     </configuration>
+    <configuration name="serve" type="js.build_tools.npm" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="serve" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="npm.build-only" />
+      <item itemvalue="npm.serve" />
+    </list>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-WS-241.14494.180" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-WS-243.22562.222" />
       </set>
     </attachedChunks>
   </component>
@@ -115,6 +144,19 @@
       <workItem from="1712302868547" duration="8000" />
       <workItem from="1712344856035" duration="18090000" />
       <workItem from="1712404977889" duration="8830000" />
+      <workItem from="1718308528698" duration="832000" />
+      <workItem from="1718468256032" duration="327000" />
+      <workItem from="1719483852313" duration="49000" />
+      <workItem from="1719628367973" duration="5000" />
+      <workItem from="1720542190363" duration="197000" />
+      <workItem from="1721062011417" duration="5452000" />
+      <workItem from="1721224956886" duration="5381000" />
+      <workItem from="1721342992464" duration="156000" />
+      <workItem from="1721431893732" duration="5000" />
+      <workItem from="1731685597349" duration="918000" />
+      <workItem from="1731694935290" duration="1921000" />
+      <workItem from="1731819806002" duration="48000" />
+      <workItem from="1737339225546" duration="1229000" />
     </task>
     <task id="LOCAL-00001" summary="Temporarily disable websocket and http stuff, to prevent issues.">
       <option name="closed" value="true" />

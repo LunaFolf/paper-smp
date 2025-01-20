@@ -5,9 +5,15 @@
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/logs" />
+      <excludeFolder url="file://$MODULE_DIR$/manual_mods" />
+      <excludeFolder url="file://$MODULE_DIR$/manual_plugins" />
+      <excludeFolder url="file://$MODULE_DIR$/server" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="web" />
     <orderEntry type="module" module-name="web" />
   </component>
 </module>

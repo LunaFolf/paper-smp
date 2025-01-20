@@ -48,20 +48,22 @@ function mapConfigToProperties(config: serverConfig) {
 let hasConfigChanged: boolean = false
 let config: serverConfig
 
-addWSSEventListener('onMessage', ({ data, ws }) => {
-  if (!data || !ws) return
+if (addWSSEventListener) {
+  addWSSEventListener('onMessage', ({ data, ws }) => {
+    if (!data || !ws) return
 
-  if (data.type === 'requestConfig') {
-    ws.send(JSON.stringify({
-      type: 'serverConfig',
-      data: config
-    }))
-  }
+    if (data.type === 'requestConfig') {
+      ws.send(JSON.stringify({
+        type: 'serverConfig',
+        data: config
+      }))
+    }
 
-  if (data.type === 'saveConfig') {
-    saveConfig(data.content)
-  }
-})
+    if (data.type === 'saveConfig') {
+      saveConfig(data.content)
+    }
+  })
+}
 
 export function setHasConfigChanged(state: boolean): void {
   hasConfigChanged = state

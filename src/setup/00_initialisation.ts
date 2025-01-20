@@ -23,17 +23,21 @@ const requiredPaths = [
   './server/mods'
 ]
 
-requiredPaths.forEach(requiredPath => {
-  const directories = requiredPath.split('/').reverse()
+export function checkRequiredPaths() {
+  requiredPaths.forEach(requiredPath => {
+    const directories = requiredPath.split('/').reverse()
 
-  let currentPath = ''
-  while (directories.length > 0) {
-    currentPath = path.join(currentPath, directories.pop()!);
-    if (!fs.existsSync(currentPath)) {
-      fs.mkdirSync(currentPath);
+    let currentPath = ''
+    while (directories.length > 0) {
+      currentPath = path.join(currentPath, directories.pop()!);
+      if (!fs.existsSync(currentPath)) {
+        fs.mkdirSync(currentPath);
+      }
     }
-  }
-})
+  })
+}
+
+checkRequiredPaths()
 
 /**
  * Sets up the Minecraft server by installing the necessary server jar and verifying the availability of the Java Runtime Environment (JRE).

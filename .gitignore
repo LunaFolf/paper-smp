@@ -2,7 +2,13 @@ server/
 bin/
 node_modules/
 dist/
-*.exe
-paper-smp-linux
+logs/
+manual_mods/
+manual_plugins/
 builds/
+
+server-config.yml
+
+paper-smp-linux
 *.env
+*.exe
